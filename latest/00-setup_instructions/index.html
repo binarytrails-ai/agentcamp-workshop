@@ -336,6 +336,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#verify-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Deployment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#running-the-application-locally" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -506,6 +517,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#verify-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify Deployment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#running-the-application-locally" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -576,23 +598,10 @@
 <p>You can change <code>australiaeast</code> to any Azure region that supports AI Foundry. Common options include: <code>eastus</code>, <code>westus2</code>, <code>westeurope</code>, <code>southeastasia</code>.</p>
 </div>
 <h3 id="3-provision-and-deploy">3. Provision and Deploy<a class="headerlink" href="#3-provision-and-deploy" title="Permanent link">¶</a></h3>
-<p>Deploy all required Azure resources using a single command:</p>
+<p>Deploy all required Azure resources using the following command. </p>
+<p>This command will provision resources defined in the <code>infra</code> folder and deploy the application to Azure Container Apps.</p>
 <div class="highlight"><pre><span></span><code><span class="n">azd</span> <span class="n">up</span>
 </code></pre></div>
-<p>This command will:</p>
-<ul>
-<li>Provision all the necessary resources in Azure.</li>
-<li>Deploy AI models.</li>
-<li>Configure authentication and permissions</li>
-</ul>
-<div class="admonition warning">
-<p class="admonition-title">Deployment Time</p>
-<p>The deployment process may take 5-10 minutes to complete. Please be patient while Azure provisions all resources.</p>
-</div>
-<h3 id="verify-deployment">Verify Deployment ✅<a class="headerlink" href="#verify-deployment" title="Permanent link">¶</a></h3>
-<ol>
-<li>Navigate to the <a href="https://portal.azure.com">Azure Portal</a> and verify the resources under the resource group <code>rg-aiagent-ws-dev</code>.</li>
-</ol>
 <hr>
 <h2 id="load-sample-data">Load Sample Data<a class="headerlink" href="#load-sample-data" title="Permanent link">¶</a></h2>
 <p>Before running the application, you should load your database with sample data required by the application.</p>
@@ -603,108 +612,48 @@
 </code></pre></div>
 </li>
 <li>
-<p>Verify that the data has been inserted successfully by checking the output messages in the terminal. You should see confirmation messages for each record inserted.</p>
+<p>Verify that the data has been inserted successfully by checking the output messages in the terminal.</p>
+</li>
+</ol>
+<hr>
+<h2 id="verify-deployment">Verify Deployment<a class="headerlink" href="#verify-deployment" title="Permanent link">¶</a></h2>
+<ol>
+<li>Navigate to the <a href="https://portal.azure.com">Azure Portal</a> and verify the resources under the resource group <code>rg-aiagent-ws-dev</code>.</li>
+<li>
+<p>The frontend application is deployed to Azure Container Apps. The url is added to your environment variables during deployment.</p>
+<p>Go to <code>.env</code> file to find the <code>FRONTEND_URL</code> variable.</p>
+</li>
+<li>
+<p>Navigate to that URL in your web browser. The Contoso Travel Agent application should load in your browser</p>
 </li>
 </ol>
 <hr>
 <h2 id="running-the-application-locally">Running the Application Locally<a class="headerlink" href="#running-the-application-locally" title="Permanent link">¶</a></h2>
-<p>You have two options to run the application: using .NET Aspire (recommended) or starting each service manually.</p>
-<h3 id="option-a-using-net-aspire-recommended">Option A: Using .NET Aspire (Recommended)<a class="headerlink" href="#option-a-using-net-aspire-recommended" title="Permanent link">¶</a></h3>
-<p>.NET Aspire orchestrates all services (MCP server, backend, and frontend) with a single command and provides a dashboard for monitoring.</p>
-<ol>
-<li>
-<p><strong>Build the frontend application:</strong></p>
+<p>For local development and testing, you can run the application on your machine or Codespace. </p>
+<div class="admonition info">
+<p class="admonition-title">Local vs Deployed</p>
+<p>Running locally connects to the same Azure resources (AI Foundry, Cosmos DB) that were provisioned during deployment. This allows you to develop and test changes before deploying them.</p>
+</div>
+<h3 id="1-build-the-frontend-application">1. Build the Frontend Application<a class="headerlink" href="#1-build-the-frontend-application" title="Permanent link">¶</a></h3>
 <p>Navigate to the frontend folder and build the application:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>src/frontend
 npm<span class="w"> </span>install
 npm<span class="w"> </span>run<span class="w"> </span>build
 </code></pre></div>
-</li>
-<li>
-<p><strong>Start the Aspire AppHost:</strong></p>
-<p>Navigate to the AppHost folder and run the application:</p>
+<h3 id="2-start-the-aspire-apphost">2. Start the Aspire AppHost<a class="headerlink" href="#2-start-the-aspire-apphost" title="Permanent link">¶</a></h3>
+<p>The application uses .NET Aspire to orchestrate all services (backend and frontend) with a single command and provides a dashboard for monitoring.
+Navigate to the AppHost folder and run the application:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>src/ContosoTravel.AppHost
 dotnet<span class="w"> </span>run
 </code></pre></div>
-<p>This will start all services and open the .NET Aspire dashboard in your browser, where you can:</p>
+<h3 id="3-access-the-application">3. Access the Application<a class="headerlink" href="#3-access-the-application" title="Permanent link">¶</a></h3>
+<p>To access the Aspire dashboard:</p>
 <ul>
-<li>View logs from all services</li>
-<li>Monitor resource usage</li>
-<li>Access endpoints for each service</li>
+<li><strong>Local Development</strong>: Open your browser to <code>http://localhost:15888</code></li>
+<li><strong>GitHub Codespaces</strong>: When the frontend starts, Codespaces will automatically forward port 15888. 
+        Go to the <strong>Ports</strong> panel in VS Code, find port <strong>15888</strong>, and click the <strong>globe icon</strong> (🌐) to open the frontend in your browser.</li>
 </ul>
-</li>
-</ol>
-<h3 id="option-b-manual-startup-individual-services">Option B: Manual Startup (Individual Services)<a class="headerlink" href="#option-b-manual-startup-individual-services" title="Permanent link">¶</a></h3>
-<p>If you prefer to start each service individually, follow these steps:</p>
-<h4 id="1-start-the-mcp-server">1. Start the MCP Server<a class="headerlink" href="#1-start-the-mcp-server" title="Permanent link">¶</a></h4>
-<ul>
-<li>
-<p>Navigate to the MCP server folder:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>src/mcp
-</code></pre></div>
-</li>
-<li>
-<p>Start the MCP server by running the following command:</p>
-<div class="highlight"><pre><span></span><code>dotnet<span class="w"> </span>run
-</code></pre></div>
-</li>
-</ul>
-<h4 id="2-start-the-backend-server">2. Start the Backend Server<a class="headerlink" href="#2-start-the-backend-server" title="Permanent link">¶</a></h4>
-<ul>
-<li>
-<p>In a separate terminal, navigate to the backend folder:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>src/backend
-</code></pre></div>
-</li>
-<li>
-<p>Start the backend server by running the following command. This will start the backend API server on <strong><code>http://localhost:5001</code></strong></p>
-<div class="highlight"><pre><span></span><code>dotnet<span class="w"> </span>run
-</code></pre></div>
-</li>
-</ul>
-<h4 id="3-start-the-frontend-server">3. Start the Frontend Server<a class="headerlink" href="#3-start-the-frontend-server" title="Permanent link">¶</a></h4>
-<ul>
-<li>
-<p>In a separate terminal, navigate to the frontend folder by running the following command:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>src/frontend
-</code></pre></div>
-</li>
-<li>
-<p>Install the required npm packages (if you haven't already):</p>
-<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install
-</code></pre></div>
-</li>
-<li>
-<p>Build the frontend application:</p>
-<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span>build
-</code></pre></div>
-</li>
-<li>
-<p>Start the frontend server. The frontend is configured to communicate with the backend API on port <strong>5001</strong>:</p>
-<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>start
-</code></pre></div>
-</li>
-</ul>
-<p>To access the frontend application:</p>
-<ul>
-<li><strong>Local Development</strong>: Open your browser to <code>http://localhost:3000</code></li>
-<li><strong>GitHub Codespaces</strong>: When the frontend starts, Codespaces will automatically forward port 3000. 
-        Go to the <strong>Ports</strong> panel in VS Code, find port <strong>3000</strong>, and click the <strong>globe icon</strong> (🌐) to open the frontend in your browser.</li>
-</ul>
-<hr>
-<h3 id="test-your-setup">Test Your Setup<a class="headerlink" href="#test-your-setup" title="Permanent link">¶</a></h3>
-<p>Regardless of which option you chose, verify that everything is working correctly:</p>
-<ul>
-<li>
-<p><strong>API Testing</strong>: Navigate to the file <code>src/backend/ContosoTravelAgent.http</code> in the code repository.</p>
-<p>This file contains HTTP requests that you can use to interact with the backend API. To send a request, click on the <code>Send Request</code> link above each request in the file.</p>
-</li>
-<li>
-<p><strong>Web Application Testing</strong>: Open your web browser and navigate to <code>http://localhost:3000</code>.</p>
-<p>Click on the <code>New Chat</code> button to start a new conversation with the travel assistant. </p>
-<p>Send a few messages to verify that the frontend and backend are communicating correctly.</p>
-</li>
-</ul>
+<p>You can see the links to access the frontend and backend services there. Click on the frontend link to open the Contoso Travel Agent application in your browser.</p>
 <hr>
 
 
