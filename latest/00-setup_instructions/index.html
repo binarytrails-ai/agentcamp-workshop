@@ -336,17 +336,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#verify-deployment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verify Deployment
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#running-the-application-locally" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -517,17 +506,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#verify-deployment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verify Deployment
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#running-the-application-locally" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -581,7 +559,6 @@
 </ol>
 <hr>
 <h2 id="set-up-azure-infrastructure">Set Up Azure Infrastructure<a class="headerlink" href="#set-up-azure-infrastructure" title="Permanent link">¶</a></h2>
-<p>Deploy the application to Azure. You will also connect to these resources when running the application from your local machine or Codespace.</p>
 <h3 id="1-authenticate-with-azure">1. Authenticate with Azure<a class="headerlink" href="#1-authenticate-with-azure" title="Permanent link">¶</a></h3>
 <p>First, authenticate with your Azure account using the Azure Developer CLI:</p>
 <div class="highlight"><pre><span></span><code><span class="n">azd</span> <span class="n">auth</span> <span class="n">login</span> <span class="p">-</span><span class="n">-use-device-code</span>
@@ -593,22 +570,20 @@
 <span class="n">azd</span> <span class="n">env</span> <span class="nb">select </span><span class="n">dev</span>
 <span class="n">azd</span> <span class="n">env</span> <span class="nb">set </span><span class="n">AZURE_LOCATION</span> <span class="n">australiaeast</span>
 </code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Azure Location</p>
-<p>You can change <code>australiaeast</code> to any Azure region that supports AI Foundry. Common options include: <code>eastus</code>, <code>westus2</code>, <code>westeurope</code>, <code>southeastasia</code>.</p>
-</div>
-<h3 id="3-provision-and-deploy">3. Provision and Deploy<a class="headerlink" href="#3-provision-and-deploy" title="Permanent link">¶</a></h3>
-<p>Deploy all required Azure resources using the following command. </p>
-<p>This command will provision resources defined in the <code>infra</code> folder and deploy the application to Azure Container Apps.</p>
-<div class="highlight"><pre><span></span><code><span class="n">azd</span> <span class="n">up</span>
+<h3 id="3-provision-azure-resources">3. Provision Azure Resources<a class="headerlink" href="#3-provision-azure-resources" title="Permanent link">¶</a></h3>
+<p>Create all required Azure infrastructure using the following command. </p>
+<p>This command will deploy resources defined in the <code>infra</code> folder.</p>
+<div class="highlight"><pre><span></span><code><span class="n">azd</span> <span class="n">provision</span>
 </code></pre></div>
+<h3 id="4-verify-resources-in-azure-portal">4. Verify Resources in Azure Portal<a class="headerlink" href="#4-verify-resources-in-azure-portal" title="Permanent link">¶</a></h3>
+<p>Navigate to the <a href="https://portal.azure.com">Azure Portal</a> and verify the resources under the resource group <code>rg-aiagent-ws-dev</code>.</p>
 <hr>
 <h2 id="load-sample-data">Load Sample Data<a class="headerlink" href="#load-sample-data" title="Permanent link">¶</a></h2>
 <p>Before running the application, you should load your database with sample data required by the application.</p>
 <ol>
 <li>
 <p>Run the following command in your terminal to execute the seeding script. You can also use the Play button in Visual Studio Code to run the script directly from the editor.</p>
-<div class="highlight"><pre><span></span><code>dotnet<span class="w"> </span>run<span class="w"> </span>--project<span class="w"> </span>scripts/seed-cosmosdb/Program.cs
+<div class="highlight"><pre><span></span><code>dotnet<span class="w"> </span>run<span class="w"> </span>scripts/seed-cosmosdb/Program.cs
 </code></pre></div>
 </li>
 <li>
@@ -616,44 +591,38 @@
 </li>
 </ol>
 <hr>
-<h2 id="verify-deployment">Verify Deployment<a class="headerlink" href="#verify-deployment" title="Permanent link">¶</a></h2>
-<ol>
-<li>Navigate to the <a href="https://portal.azure.com">Azure Portal</a> and verify the resources under the resource group <code>rg-aiagent-ws-dev</code>.</li>
-<li>
-<p>The frontend application is deployed to Azure Container Apps. The url is added to your environment variables during deployment.</p>
-<p>Go to <code>.env</code> file to find the <code>FRONTEND_URL</code> variable.</p>
-</li>
-<li>
-<p>Navigate to that URL in your web browser. The Contoso Travel Agent application should load in your browser</p>
-</li>
-</ol>
-<hr>
 <h2 id="running-the-application-locally">Running the Application Locally<a class="headerlink" href="#running-the-application-locally" title="Permanent link">¶</a></h2>
-<p>For local development and testing, you can run the application on your machine or Codespace. </p>
+<p>For local development and testing, you can run the application on your machine or Codespace.</p>
 <div class="admonition info">
 <p class="admonition-title">Local vs Deployed</p>
-<p>Running locally connects to the same Azure resources (AI Foundry, Cosmos DB) that were provisioned during deployment. This allows you to develop and test changes before deploying them.</p>
+<p>Running locally connects to the same Azure resources (AI Foundry, Cosmos DB) that were provisioned during deployment. This allows you to develop and test changes before deploying them. The environment variables for connecting to Azure resources are setup in the .env file when you provision the infrastructure.</p>
 </div>
 <h3 id="1-build-the-frontend-application">1. Build the Frontend Application<a class="headerlink" href="#1-build-the-frontend-application" title="Permanent link">¶</a></h3>
-<p>Navigate to the frontend folder and build the application:</p>
+<p>Open a new terminal in Visual Studio Code and navigate to <code>src/frontend</code> folder and build the application:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>src/frontend
 npm<span class="w"> </span>install
 npm<span class="w"> </span>run<span class="w"> </span>build
 </code></pre></div>
-<h3 id="2-start-the-aspire-apphost">2. Start the Aspire AppHost<a class="headerlink" href="#2-start-the-aspire-apphost" title="Permanent link">¶</a></h3>
-<p>The application uses .NET Aspire to orchestrate all services (backend and frontend) with a single command and provides a dashboard for monitoring.
-Navigate to the AppHost folder and run the application:</p>
+<h3 id="2-start-the-aspire-dashboard">2. Start the Aspire Dashboard<a class="headerlink" href="#2-start-the-aspire-dashboard" title="Permanent link">¶</a></h3>
+<p>The application uses .NET Aspire to orchestrate all services (backend and frontend) with a single command and provides a dashboard for monitoring.</p>
+<p>Open a new terminal in Visual Studio Code and navigate to <code>src/ContosoTravel.AppHost</code> folder and run the application:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>src/ContosoTravel.AppHost
 dotnet<span class="w"> </span>run
 </code></pre></div>
 <h3 id="3-access-the-application">3. Access the Application<a class="headerlink" href="#3-access-the-application" title="Permanent link">¶</a></h3>
-<p>To access the Aspire dashboard:</p>
+<ol>
+<li>
+<p>To access the .NET Aspire dashboard:</p>
 <ul>
-<li><strong>Local Development</strong>: Open your browser to <code>http://localhost:15888</code></li>
-<li><strong>GitHub Codespaces</strong>: When the frontend starts, Codespaces will automatically forward port 15888. 
-        Go to the <strong>Ports</strong> panel in VS Code, find port <strong>15888</strong>, and click the <strong>globe icon</strong> (🌐) to open the frontend in your browser.</li>
+<li><strong>Local Development</strong>: Open your browser to <code>http://localhost:15160</code></li>
+<li><strong>GitHub Codespaces</strong>: When the application starts, Codespaces will automatically forward port 15160.
+    Go to the <strong>Ports</strong> panel in VS Code, find port <strong>15160</strong>, and click the <strong>globe icon</strong> (🌐) to open the dashboard in your browser.</li>
 </ul>
+</li>
+<li>
 <p>You can see the links to access the frontend and backend services there. Click on the frontend link to open the Contoso Travel Agent application in your browser.</p>
+</li>
+</ol>
 <hr>
 
 
