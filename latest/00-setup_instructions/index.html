@@ -346,6 +346,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#deploying-services-to-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploying Services to Azure
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -489,6 +500,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#deploying-services-to-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploying Services to Azure
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -576,7 +598,7 @@
 npm<span class="w"> </span>install
 npm<span class="w"> </span>run<span class="w"> </span>build
 </code></pre></div>
-<h3 id="2-start-the-aspire-dashboard">2. Start the Aspire Dashboard<a class="headerlink" href="#2-start-the-aspire-dashboard" title="Permanent link">¶</a></h3>
+<h3 id="2-start-the-application">2. Start the Application<a class="headerlink" href="#2-start-the-application" title="Permanent link">¶</a></h3>
 <p>The application uses .NET Aspire to orchestrate all services (backend and frontend) with a single command and provides a dashboard for monitoring.</p>
 <p>Open a new terminal in Visual Studio Code and navigate to <code>src/ContosoTravel.AppHost</code> folder and run the application:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>src/ContosoTravel.AppHost
@@ -598,6 +620,12 @@ dotnet<span class="w"> </span>run
 <p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../media/frontend-app.png" data-desc-position="bottom"><img alt="Frontend Application" src="../media/frontend-app.png"></a></p>
 </li>
 </ol>
+<hr>
+<h2 id="deploying-services-to-azure">Deploying Services to Azure<a class="headerlink" href="#deploying-services-to-azure" title="Permanent link">¶</a></h2>
+<p>Once you have tested your changes locally, you can deploy the services using the following command:</p>
+<div class="highlight"><pre><span></span><code>azd<span class="w"> </span>deploy
+</code></pre></div>
+<p>This command will build and deploy the backend and frontend service to Azure. You can then access the deployed frontend application using the URL provided in the <code>.env</code> file under the <code>FRONTEND_URI</code> variable.</p>
 <hr>
 
 
