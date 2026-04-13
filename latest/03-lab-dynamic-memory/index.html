@@ -1,0 +1,980 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The site contains all the materials for the workshop " designing="" memory-driven="" ai="" systems"="" at="" agentcamp="" 2026="" perth."="">
+      
+      
+        <meta name="author" content="Rakesh Lakshminarayanana">
+      
+      
+        <link rel="canonical" href="https://binarytrails-ai.github.io/agentcamp-workshop/latest/03-lab-dynamic-memory/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../media/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 3: Dynamic Memory - Learning From Conversation - Designing Memory-Driven AI Systems</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="pink">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-3-dynamic-memory-learning-from-conversation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Designing Memory-Driven AI Systems" class="md-header__button md-logo" aria-label="Designing Memory-Driven AI Systems" data-md-component="logo">
+      
+  <img src="../media/favicon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Designing Memory-Driven AI Systems
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 3: Dynamic Memory - Learning From Conversation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="pink" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C8 5.08 10 8.3 10 12s-2 6.92-5 8.65C6.47 21.5 8.18 22 10 22a10 10 0 0 0 10-10A10 10 0 0 0 10 2"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="amber" data-md-color-accent="cyan" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Designing Memory-Driven AI Systems" class="md-nav__button md-logo" aria-label="Designing Memory-Driven AI Systems" data-md-component="logo">
+      
+  <img src="../media/favicon.png" alt="logo">
+
+    </a>
+    Designing Memory-Driven AI Systems
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-setup_instructions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Resources/aspire-dashboard-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aspire Dashboard Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../finishing-up/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finishing Up
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Learning Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#the-problem-static-profiles-get-stale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem: Static Profiles Get Stale
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample-interaction-what-youll-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sample Interaction: What You'll Build
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instructions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-implementation-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Implementation Details
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-your-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Your Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture Benefits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-scenarios-optional-exploration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Scenarios (Optional Exploration)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-3-dynamic-memory-learning-from-conversation">Lab 3: Dynamic Memory - Learning From Conversation<a class="headerlink" href="#lab-3-dynamic-memory-learning-from-conversation" title="Permanent link">¶</a></h1>
+<p>In this lab, you will complete the memory system by enabling dynamic profile extraction.</p>
+<p>You will activate the profile extraction mechanism that automatically learns user preferences from natural conversation and updates their profile in real-time, without requiring explicit commands or forms.</p>
+<p>By the end of this lab, you will:</p>
+<ul>
+<li>✅ Enable automatic preference extraction from conversation</li>
+<li>✅ Build user profiles organically through natural dialogue</li>
+<li>✅ Update profiles incrementally as new information emerges</li>
+<li>✅ Understand how AI context providers enable bidirectional memory</li>
+</ul>
+<h2 id="the-problem-static-profiles-get-stale">The Problem: Static Profiles Get Stale<a class="headerlink" href="#the-problem-static-profiles-get-stale" title="Permanent link">¶</a></h2>
+<p>From Lab 2, you saw that static memory is helpful but limited:</p>
+<div class="highlight"><pre><span></span><code>👤 User: I want to plan a trip
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>🤖 Agent: I see you're an adventure seeker with a $2,000-$3,000 budget...
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>👤 User: Actually, I'm more interested in relaxation this time. 
+        And I just got a bonus, so my budget is now $5,000!
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>🤖 Agent: Great! Let me find relaxing destinations within $5,000...
+          [Provides recommendations for this conversation]
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[Next conversation]
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>👤 User: Suggest a vacation
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>🤖 Agent: Based on your adventure seeker profile and $2,000-$3,000 budget...
+          ❌ Still using OLD profile - didn't save changes!
+</code></pre></div>
+<hr>
+<h2 id="sample-interaction-what-youll-build">Sample Interaction: What You'll Build<a class="headerlink" href="#sample-interaction-what-youll-build" title="Permanent link">¶</a></h2>
+<p>With dynamic memory, the agent learns and updates continuously:</p>
+<div class="highlight"><pre><span></span><code>👤 User: I want to plan a trip
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>🤖 Agent: I'd love to help! What kind of trip are you thinking about?
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>👤 User: Something relaxing, maybe around $5,000. I've been stressed at work.
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>💾 Background: Extracting preferences...
+   - Travel style: relaxation
+   - Budget: $5,000
+   - Context: stressed at work (seeking stress relief)
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>🤖 Agent: I understand - you deserve some quality relaxation! 
+          With a $5,000 budget, you could enjoy luxury wellness retreats 
+          or peaceful coastal escapes. What sounds more appealing?
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>👤 User: Coastal escapes sound perfect. I also need vegetarian food options.
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>💾 Background: Updating profile...
+   - Travel style: relaxation + coastal
+   - Budget: $5,000
+   - Dietary requirements: vegetarian
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>🤖 Agent: Perfect! Here are some beautiful coastal retreats with excellent 
+          vegetarian dining:
+
+• Byron Bay, New South Wales
+  - Laid-back beach town with wellness focus
+  - Abundant vegetarian/vegan cafes and restaurants
+  - Luxury beachfront accommodations within budget
+  - Activities: Yoga, beach walks, spa treatments
+
+• Great Barrier Reef Luxury Resort, Queensland
+  - Private island resort with all-inclusive packages
+  - Dedicated vegetarian menu with fresh local produce
+  - Budget: $4,500 for 5 nights including meals
+  - Activities: Snorkeling, spa, meditation classes
+
+• Bay of Islands, New Zealand
+  - Secluded coastal paradise with boutique lodges
+  - Farm-to-table dining with vegetarian specialties
+  - Budget: $4,800 for 6 nights
+  - Activities: Sailing, nature walks, thermal spas
+
+Would you like more details on any of these?
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>👤 User: Byron Bay looks great!
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>💾 Background: Updating profile...
+   - Interested destination: Byron Bay
+   - Purpose: Relaxation/wellness vacation
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[Next day, new conversation]
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>👤 User: Can you suggest another trip?
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>🤖 Agent: Hi again! I remember you were interested in relaxation and coastal 
+          destinations, with a $5,000 budget and vegetarian preferences. 
+
+          Are you still planning the Byron Bay trip we discussed, or would 
+          you like to explore other relaxing coastal options?
+</code></pre></div>
+<p><strong>Key Improvement</strong>: Agent automatically learned and saved your preferences without you filling out a form or explicitly saying "remember this."</p>
+<hr>
+<h2 id="instructions">Instructions<a class="headerlink" href="#instructions" title="Permanent link">¶</a></h2>
+<h3 id="step-1-understand-the-extraction-mechanism">Step 1: Understand the Extraction Mechanism<a class="headerlink" href="#step-1-understand-the-extraction-mechanism" title="Permanent link">¶</a></h3>
+<p>The <code>UserProfileMemoryProvider</code> has two methods:
+- <strong>ProvideAIContextAsync</strong>: Loads profile (✅ Already working in Lab 2)
+- <strong>StoreAIContextAsync</strong>: Extracts and saves preferences (🔄 We'll activate this now)</p>
+<p>Open <a href="../../src/backend/Services/UserProfileMemoryProvider.cs">src/backend/Services/UserProfileMemoryProvider.cs</a>:</p>
+<p>Review the <code>StoreAIContextAsync</code> method:</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="w"> </span><span class="nf">StoreAIContextAsync</span><span class="p">(</span>
+<span class="w">    </span><span class="n">AIContext</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span>
+<span class="w">    </span><span class="n">CancellationToken</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// 1. Get conversation history</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="p">.</span><span class="n">MemoryContext</span><span class="p">.</span><span class="n">Messages</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 2. Send to LLM with extraction instructions</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">extractionPrompt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"""</span>
+<span class="w">        </span><span class="n">Analyze</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">conversation</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">extract</span><span class="w"> </span><span class="n">travel</span><span class="w"> </span><span class="n">preferences</span><span class="p">.</span>
+<span class="w">        </span><span class="n">Return</span><span class="w"> </span><span class="n">ONLY</span><span class="w"> </span><span class="k">new</span><span class="o">/</span><span class="n">updated</span><span class="w"> </span><span class="n">information</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span>
+<span class="w">        </span><span class="s">""";</span>
+
+<span class="w">    </span><span class="c1">// 3. Parse extracted JSON</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">extractedProfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JsonSerializer</span><span class="p">.</span><span class="n">Deserialize</span><span class="o">&lt;</span><span class="n">UserProfileMemory</span><span class="o">&gt;</span><span class="p">(</span><span class="n">response</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 4. Merge with existing profile</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">currentProfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">LoadProfileFromCosmosAsync</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">mergedProfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MergeProfiles</span><span class="p">(</span><span class="n">currentProfile</span><span class="p">,</span><span class="w"> </span><span class="n">extractedProfile</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 5. Save back to Cosmos DB</span>
+<span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nf">SaveProfileToCosmosAsync</span><span class="p">(</span><span class="n">mergedProfile</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>How it works:</strong>
+1. After agent responds, <code>StoreAIContextAsync</code> is called automatically
+2. Recent conversation history sent to LLM with extraction prompt
+3. LLM identifies preferences: budget, interests, dietary needs, travel style
+4. Extracted data merged with existing profile (incremental updates)
+5. Updated profile saved to Cosmos DB
+6. Next conversation loads updated profile via <code>ProvideAIContextAsync</code></p>
+<h3 id="step-2-verify-extraction-is-enabled">Step 2: Verify Extraction is Enabled<a class="headerlink" href="#step-2-verify-extraction-is-enabled" title="Permanent link">¶</a></h3>
+<p>The good news: <strong>StoreAIContextAsync is already implemented and active!</strong></p>
+<p>The <code>UserProfileMemoryProvider</code> is registered in your agent builder (from Lab 2), which means:
+- <code>ProvideAIContextAsync</code> runs BEFORE each LLM call (profile injection)
+- <code>StoreAIContextAsync</code> runs AFTER each LLM response (preference extraction)</p>
+<p>No code changes needed - the functionality is already there!</p>
+<h3 id="step-3-understand-the-extraction-prompt">Step 3: Understand the Extraction Prompt<a class="headerlink" href="#step-3-understand-the-extraction-prompt" title="Permanent link">¶</a></h3>
+<p>Open <a href="../../src/backend/Services/UserProfileMemoryProvider.cs">src/backend/Services/UserProfileMemoryProvider.cs</a> and find the extraction prompt:</p>
+<div class="highlight"><pre><span></span><code><span class="k">private</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">ExtractionInstructions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"""</span>
+<span class="n">You</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">profile</span><span class="w"> </span><span class="n">extraction</span><span class="w"> </span><span class="n">assistant</span><span class="p">.</span><span class="w"> </span><span class="n">Analyze</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">conversation</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">extract</span><span class="w"> </span>
+<span class="n">travel</span><span class="w"> </span><span class="n">preferences</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">structured</span><span class="w"> </span><span class="n">JSON</span><span class="w"> </span><span class="n">format</span><span class="p">.</span>
+
+<span class="n">ONLY</span><span class="w"> </span><span class="n">extract</span><span class="w"> </span><span class="n">information</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">EXPLICITLY</span><span class="w"> </span><span class="n">mentioned</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">clearly</span><span class="w"> </span><span class="n">implied</span><span class="p">.</span>
+<span class="n">Return</span><span class="w"> </span><span class="n">ONLY</span><span class="w"> </span><span class="n">fields</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">updated</span><span class="w"> </span><span class="n">information</span><span class="p">.</span>
+
+<span class="n">Profile</span><span class="w"> </span><span class="n">Schema</span><span class="p">:</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="s">"travelStyle"</span><span class="p">:</span><span class="w"> </span><span class="s">"adventure seeker | luxury | budget backpacker | family | relaxation | cultural"</span><span class="p">,</span>
+<span class="w">  </span><span class="s">"budgetRange"</span><span class="p">:</span><span class="w"> </span><span class="s">"$1000-2000 | $2000-3000 | $3000-5000 | $5000+"</span><span class="p">,</span>
+<span class="w">  </span><span class="s">"interests"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s">"hiking"</span><span class="p">,</span><span class="w"> </span><span class="s">"beaches"</span><span class="p">,</span><span class="w"> </span><span class="s">"museums"</span><span class="p">,</span><span class="w"> </span><span class="s">"food"</span><span class="p">,</span><span class="w"> </span><span class="s">"wildlife"</span><span class="p">],</span>
+<span class="w">  </span><span class="s">"dietaryRequirements"</span><span class="p">:</span><span class="w"> </span><span class="s">"vegetarian | vegan | gluten-free | halal | kosher | none"</span><span class="p">,</span>
+<span class="w">  </span><span class="s">"numberOfTravelers"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="s">"tripDuration"</span><span class="p">:</span><span class="w"> </span><span class="s">"weekend | 1 week | 2 weeks | 1 month+"</span><span class="p">,</span>
+<span class="w">  </span><span class="s">"pastDestinations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="s">"destination"</span><span class="p">:</span><span class="w"> </span><span class="s">"Place name"</span><span class="p">,</span>
+<span class="w">      </span><span class="s">"rating"</span><span class="p">:</span><span class="w"> </span><span class="s">"loved it | okay | disappointing"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">Rules</span><span class="p">:</span>
+<span class="o">-</span><span class="w"> </span><span class="n">Keep</span><span class="w"> </span><span class="n">interests</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">top</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">most</span><span class="w"> </span><span class="n">relevant</span>
+<span class="o">-</span><span class="w"> </span><span class="n">Infer</span><span class="w"> </span><span class="n">travel</span><span class="w"> </span><span class="n">style</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">g</span><span class="p">.,</span><span class="w"> </span><span class="s">"stressed at work"</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="s">"relaxation"</span><span class="p">)</span>
+<span class="o">-</span><span class="w"> </span><span class="n">Don</span><span class="err">'</span><span class="n">t</span><span class="w"> </span><span class="n">hallucinate</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="n">extract</span><span class="w"> </span><span class="n">what</span><span class="err">'</span><span class="n">s</span><span class="w"> </span><span class="n">actually</span><span class="w"> </span><span class="n">mentioned</span>
+<span class="o">-</span><span class="w"> </span><span class="n">Merge</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">info</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">existing</span><span class="w"> </span><span class="n">profile</span><span class="w"> </span><span class="p">(</span><span class="n">don</span><span class="err">'</span><span class="n">t</span><span class="w"> </span><span class="k">remove</span><span class="w"> </span><span class="n">old</span><span class="w"> </span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">Return</span><span class="w"> </span><span class="n">ONLY</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">JSON</span><span class="w"> </span><span class="kt">object</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">updated</span><span class="w"> </span><span class="n">fields</span><span class="p">.</span>
+<span class="s">""";</span>
+</code></pre></div>
+<p><strong>Key Points:</strong>
+- LLM acts as intelligent parser
+- Extracts structured data from unstructured conversation
+- Incremental updates (doesn't overwrite entire profile)
+- Handles implicit preferences (e.g., "stressed at work" implies relaxation)</p>
+<h3 id="step-4-test-profile-building-from-scratch">Step 4: Test Profile Building From Scratch<a class="headerlink" href="#step-4-test-profile-building-from-scratch" title="Permanent link">¶</a></h3>
+<p>Let's test with a user who has NO existing profile.</p>
+<ol>
+<li><strong>Modify the userId temporarily</strong> to test with a fresh profile:</li>
+</ol>
+<p>In <a href="../../src/backend/Agents/ContosoTravelAgentBuilder.cs">src/backend/Agents/ContosoTravelAgentBuilder.cs</a>, change the default userId:</p>
+<div class="highlight"><pre><span></span><code><span class="n">AIContextProviderFactory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_httpContextAccessor</span><span class="p">.</span><span class="n">HttpContext</span><span class="o">?.</span><span class="n">Items</span><span class="p">[</span><span class="s">"UserId"</span><span class="p">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span>
+<span class="w">                    </span><span class="o">??</span><span class="w"> </span><span class="s">"test-user-new"</span><span class="p">;</span><span class="w"> </span><span class="c1">// Changed from "demo-user"</span>
+
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">userProfileMemoryProvider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">UserProfileMemoryProvider</span><span class="p">(</span>
+<span class="w">        </span><span class="n">_chatClient</span><span class="p">,</span>
+<span class="w">        </span><span class="n">_cosmosDatabase</span><span class="p">,</span>
+<span class="w">        </span><span class="n">_config</span><span class="p">.</span><span class="n">CosmosDbUserProfileContainer</span><span class="p">,</span>
+<span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">UserProfileMemoryProviderScope</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">UserId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userId</span><span class="p">,</span>
+<span class="w">            </span><span class="n">ApplicationId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">ApplicationId</span><span class="p">,</span>
+<span class="w">            </span><span class="n">AgentId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">AgentName</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="n">_loggerFactory</span><span class="p">.</span><span class="n">CreateLogger</span><span class="o">&lt;</span><span class="n">UserProfileMemoryProvider</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">userProfileMemoryProvider</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ol>
+<li><strong>Restart the backend:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>src/backend
+dotnet<span class="w"> </span>run
+</code></pre></div>
+<ol>
+<li><strong>Have a natural conversation</strong> to build a profile from scratch:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>👤: I want to plan a trip
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>🤖: I'd love to help! What kind of trip are you thinking about?
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>👤: I'm looking for adventure, maybe around $3,000. I love hiking and wildlife.
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>🤖: [Provides adventure/hiking/wildlife recommendations]
+</code></pre></div>
+<p><strong>Behind the scenes:</strong> 
+   - StoreAIContextAsync extracts: style=adventure, budget=$3000, interests=[hiking, wildlife]
+   - Profile created in Cosmos DB</p>
+<ol>
+<li><strong>Start a NEW conversation</strong> (click New Chat):</li>
+</ol>
+<div class="highlight"><pre><span></span><code>👤: Suggest a vacation
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>🤖: Hi! I see you're an adventure traveler who loves hiking and wildlife, 
+    with a budget around $3,000. Would you like suggestions based on these preferences?
+</code></pre></div>
+<p><strong>Success!</strong> The profile was built from conversation and persisted.</p>
+<h3 id="step-5-test-profile-updates">Step 5: Test Profile Updates<a class="headerlink" href="#step-5-test-profile-updates" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Continue the conversation</strong> with different preferences:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>👤: Actually, I'm also interested in photography now. And I'm vegetarian.
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>🤖: [Acknowledges and provides updated recommendations]
+</code></pre></div>
+<p><strong>Behind the scenes:</strong>
+   - StoreAIContextAsync merges: interests=[hiking, wildlife, photography], dietary=vegetarian
+   - Profile updated in Cosmos DB</p>
+<ol>
+<li><strong>Start ANOTHER new conversation:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code>👤: Plan a trip for me
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>🤖: Based on your adventure style, love for hiking, wildlife, and photography,
+    plus your vegetarian preferences and $3,000 budget...
+</code></pre></div>
+<p><strong>Success!</strong> The updated profile with photography and vegetarian preferences is loaded.</p>
+<h3 id="step-6-compare-static-vs-dynamic-memory">Step 6: Compare Static vs Dynamic Memory<a class="headerlink" href="#step-6-compare-static-vs-dynamic-memory" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Switch back to demo-user</strong> (who has static profile):</li>
+</ol>
+<p>In ContosoTravelAgentBuilder.cs:
+   </p><div class="highlight"><pre><span></span><code><span class="kt">string</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_httpContextAccessor</span><span class="p">.</span><span class="n">HttpContext</span><span class="o">?.</span><span class="n">Items</span><span class="p">[</span><span class="s">"UserId"</span><span class="p">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span>
+<span class="w">                </span><span class="o">??</span><span class="w"> </span><span class="s">"demo-user"</span><span class="p">;</span>
+</code></pre></div><p></p>
+<ol>
+<li><strong>Test the existing demo-user profile:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code>I want a luxury vacation this time, budget $10,000
+</code></pre></div>
+<p>The agent will acknowledge the change for THIS conversation, but...</p>
+<ol>
+<li><strong>Start a new conversation:</strong></li>
+</ol>
+<div class="highlight"><pre><span></span><code>Suggest a vacation
+</code></pre></div>
+<p>The agent will load the UPDATED profile that now includes "luxury" style and "$10,000" budget!</p>
+<p><strong>Observation:</strong> Dynamic memory works for ALL users - it updates demo-user's profile just like it created test-user-new's profile.</p>
+<h2 id="key-implementation-details">Key Implementation Details<a class="headerlink" href="#key-implementation-details" title="Permanent link">¶</a></h2>
+<h3 id="bidirectional-memory-flow">Bidirectional Memory Flow<a class="headerlink" href="#bidirectional-memory-flow" title="Permanent link">¶</a></h3>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────────────┐
+│  User sends message                         │
+└─────────────┬───────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────┐
+│  ProvideAIContextAsync()                    │
+│  - Load profile from Cosmos DB              │
+│  - Inject as context message                │
+└─────────────┬───────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────┐
+│  LLM processes:                             │
+│  - User message                             │
+│  - Profile context                          │
+│  - Agent instructions                       │
+└─────────────┬───────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────┐
+│  Agent responds to user                     │
+└─────────────┬───────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────┐
+│  StoreAIContextAsync()                      │
+│  - Extract preferences from conversation    │
+│  - Merge with existing profile              │
+│  - Save to Cosmos DB                        │
+└─────────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="profile-merging-strategy">Profile Merging Strategy<a class="headerlink" href="#profile-merging-strategy" title="Permanent link">¶</a></h3>
+<p>The <code>MergeProfiles</code> method combines old and new data intelligently:</p>
+<div class="highlight"><pre><span></span><code><span class="k">private</span><span class="w"> </span><span class="n">UserProfileMemory</span><span class="w"> </span><span class="nf">MergeProfiles</span><span class="p">(</span>
+<span class="w">    </span><span class="n">UserProfileMemory</span><span class="w"> </span><span class="n">existing</span><span class="p">,</span><span class="w"> </span>
+<span class="w">    </span><span class="n">UserProfileMemory</span><span class="w"> </span><span class="n">extracted</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">UserProfileMemory</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Use new value if provided, otherwise keep existing</span>
+<span class="w">        </span><span class="n">TravelStyle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extracted</span><span class="p">.</span><span class="n">TravelStyle</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="n">existing</span><span class="p">.</span><span class="n">TravelStyle</span><span class="p">,</span>
+<span class="w">        </span><span class="n">BudgetRange</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extracted</span><span class="p">.</span><span class="n">BudgetRange</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="n">existing</span><span class="p">.</span><span class="n">BudgetRange</span><span class="p">,</span>
+<span class="w">        </span><span class="n">DietaryRequirements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extracted</span><span class="p">.</span><span class="n">DietaryRequirements</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="n">existing</span><span class="p">.</span><span class="n">DietaryRequirements</span><span class="p">,</span>
+
+<span class="w">        </span><span class="c1">// Merge lists (combine + deduplicate)</span>
+<span class="w">        </span><span class="n">Interests</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MergeLists</span><span class="p">(</span><span class="n">existing</span><span class="p">.</span><span class="n">Interests</span><span class="p">,</span><span class="w"> </span><span class="n">extracted</span><span class="p">.</span><span class="n">Interests</span><span class="p">),</span>
+<span class="w">        </span><span class="n">PastDestinations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MergeLists</span><span class="p">(</span><span class="n">existing</span><span class="p">.</span><span class="n">PastDestinations</span><span class="p">,</span><span class="w"> </span><span class="n">extracted</span><span class="p">.</span><span class="n">PastDestinations</span><span class="p">),</span>
+
+<span class="w">        </span><span class="c1">// Numeric fields: use new if provided</span>
+<span class="w">        </span><span class="n">NumberOfTravelers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extracted</span><span class="p">.</span><span class="n">NumberOfTravelers</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="n">existing</span><span class="p">.</span><span class="n">NumberOfTravelers</span><span class="p">,</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Merge Behavior:</strong>
+- Strings: New overwrites old (if provided)
+- Lists: Combine and deduplicate (keeps unique items)
+- Numbers: New overwrites old (if provided)
+- Nulls: Ignored (doesn't erase existing data)</p>
+<h3 id="when-extraction-runs">When Extraction Runs<a class="headerlink" href="#when-extraction-runs" title="Permanent link">¶</a></h3>
+<p><code>StoreAIContextAsync</code> is called in these scenarios:
+1. After agent provides final response
+2. After tool calls complete (if any)
+3. Before returning response to user
+4. Only if conversation history exists (skip on empty conversations)</p>
+<p><strong>Performance:</strong> Extraction adds ~1-2 seconds to response time (LLM call to parse preferences)</p>
+<h2 id="test-your-implementation">Test Your Implementation<a class="headerlink" href="#test-your-implementation" title="Permanent link">¶</a></h2>
+<p>Comprehensive testing checklist:</p>
+<h3 id="test-1-build-profile-from-scratch">Test 1: Build Profile From Scratch<a class="headerlink" href="#test-1-build-profile-from-scratch" title="Permanent link">¶</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Start with new userId (no existing profile)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Have natural conversation mentioning preferences</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Verify profile created in Cosmos DB</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Start new conversation, confirm profile loaded</li>
+</ul>
+<h3 id="test-2-incremental-updates">Test 2: Incremental Updates<a class="headerlink" href="#test-2-incremental-updates" title="Permanent link">¶</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Start conversation with existing profile</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Mention NEW preferences in conversation</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Verify profile updated (check Cosmos DB or new conversation)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Confirm old preferences not lost</li>
+</ul>
+<h3 id="test-3-implicit-extraction">Test 3: Implicit Extraction<a class="headerlink" href="#test-3-implicit-extraction" title="Permanent link">¶</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Say "I've been stressed at work" → should infer relaxation style</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Say "traveling with my family" → should set numberOfTravelers</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Say "I loved my trip to Tokyo" → should add to pastDestinations</li>
+</ul>
+<h3 id="test-4-cross-session-persistence">Test 4: Cross-Session Persistence<a class="headerlink" href="#test-4-cross-session-persistence" title="Permanent link">¶</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Build profile in conversation</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Close browser completely</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Reopen and start new conversation</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled=""><span class="task-list-indicator"></span></label> Verify profile still loads correctly</li>
+</ul>
+<h2 id="observations">Observations<a class="headerlink" href="#observations" title="Permanent link">¶</a></h2>
+<p>After implementing dynamic memory, you should notice:</p>
+<ul>
+<li>✅ Profile builds automatically from conversation</li>
+<li>✅ No forms or explicit "save profile" commands needed</li>
+<li>✅ Preferences update incrementally as user mentions new information</li>
+<li>✅ Agent becomes more personalized over time</li>
+<li>✅ Natural conversation flow (not interrogation)</li>
+<li>✅ Profile persists across sessions and devices</li>
+</ul>
+<h2 id="architecture-benefits">Architecture Benefits<a class="headerlink" href="#architecture-benefits" title="Permanent link">¶</a></h2>
+<p>This pattern provides several advantages:</p>
+<ol>
+<li><strong>User Experience</strong>: Natural conversation vs filling out forms</li>
+<li><strong>Data Quality</strong>: Preferences emerge organically, more accurate</li>
+<li><strong>Maintenance</strong>: No manual profile management</li>
+<li><strong>Privacy</strong>: Users control what they share through conversation</li>
+<li><strong>Flexibility</strong>: Works for implicit and explicit preference statements</li>
+</ol>
+<h2 id="advanced-scenarios-optional-exploration">Advanced Scenarios (Optional Exploration)<a class="headerlink" href="#advanced-scenarios-optional-exploration" title="Permanent link">¶</a></h2>
+<p>If you want to go deeper, try these extensions:</p>
+<p><strong>Scenario 1: Profile Reset</strong>
+Add a command to clear profile:
+</p><div class="highlight"><pre><span></span><code>User: Forget my preferences
+Agent: [Clears profile from database]
+</code></pre></div><p></p>
+<p><strong>Scenario 2: Profile Viewing</strong>
+Let users see what's stored:
+</p><div class="highlight"><pre><span></span><code>User: What do you know about me?
+Agent: [Displays current profile in friendly format]
+</code></pre></div><p></p>
+<p><strong>Scenario 3: Selective Updates</strong>
+Allow partial updates:
+</p><div class="highlight"><pre><span></span><code>User: Change my budget to $5000 but keep everything else
+Agent: [Updates only budgetRange field]
+</code></pre></div><p></p>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<p>Congratulations! You've completed the full memory implementation:</p>
+<ul>
+<li>✅ Lab 1: Baseline search without memory</li>
+<li>✅ Lab 2: Static profile memory for personalization</li>
+<li>✅ Lab 3: Dynamic memory extraction from conversation</li>
+</ul>
+<p>Your travel agent now:
+- Searches destinations effectively
+- Remembers user preferences across sessions
+- Learns from natural conversation
+- Provides personalized recommendations</p>
+<h3 id="what-youve-learned">What You've Learned<a class="headerlink" href="#what-youve-learned" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>AI Context Providers</strong>: Bidirectional memory patterns</li>
+<li><strong>Profile Extraction</strong>: Using LLMs to parse unstructured data</li>
+<li><strong>Incremental Updates</strong>: Merging new information with existing profiles</li>
+<li><strong>Cosmos DB Integration</strong>: Profile storage and retrieval</li>
+<li><strong>User Experience</strong>: Natural conversation vs forms</li>
+</ul>
+<h3 id="potential-next-steps">Potential Next Steps<a class="headerlink" href="#potential-next-steps" title="Permanent link">¶</a></h3>
+<p>Consider exploring:
+- <strong>Multi-agent workflows</strong>: Specialized agents for different tasks
+- <strong>Tool integration</strong>: Flight booking, hotel search, visa checking
+- <strong>Semantic search</strong>: Vector-based destination recommendations
+- <strong>Conversation history</strong>: Long-term chat memory beyond profiles
+- <strong>Evaluation</strong>: Testing memory accuracy and user satisfaction</p>
+<p>👉 <strong><a href="../">Return to Workshop Home</a></strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.footer", "navigation.tracking", "navigation.top", "content.code.copy", "navigation.tabs.sticky", "content.tabs.link", "search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../js/custom-nav.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
