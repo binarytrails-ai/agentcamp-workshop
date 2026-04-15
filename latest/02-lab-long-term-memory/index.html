@@ -589,27 +589,11 @@ Session 2: Agent: "Based on your hiking interests and $2000 budget..." ✅
 <h2 id="instructions">Instructions<a class="headerlink" href="#instructions" title="Permanent link">¶</a></h2>
 <h3 id="part-a-profile-injection">Part A:  Profile Injection<a class="headerlink" href="#part-a-profile-injection" title="Permanent link">¶</a></h3>
 <p>Let's start by implementing read-only profile memory.</p>
-<h4 id="step-1-review-the-user-profile-data">Step 1: Review the User Profile Data<a class="headerlink" href="#step-1-review-the-user-profile-data" title="Permanent link">¶</a></h4>
-<p>Open <a href="../../data/user-profiles.json">data/user-profiles.json</a>. This is the sample data for user profiles that will be loaded into Cosmos DB. </p>
-<div class="highlight"><pre><span></span><code><span class="p">[</span>
-<span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo-user_ContosoTravelApp_TravelAssistant"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"userId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo-user"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"applicationId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ContosoTravelApp"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"agentId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TravelAssistant"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"travelStyle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"adventure seeker"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"budgetRange"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$2000-3000"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"interests"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"hiking"</span><span class="p">,</span><span class="w"> </span><span class="s2">"local cuisine"</span><span class="p">,</span><span class="w"> </span><span class="s2">"photography"</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">"dietaryRequirements"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vegetarian"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"numberOfTravelers"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"tripDuration"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"pastDestinations"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">]</span>
-</code></pre></div>
+<h4 id="step-1-review-the-user-profile-model">Step 1: Review the User Profile Model<a class="headerlink" href="#step-1-review-the-user-profile-model" title="Permanent link">¶</a></h4>
+<p>Open <code>src/backend/Models/UserProfileMemory.cs</code> to review the structure of the user profile. This model defines the information we will store about each user, such as their travel style, budget, interests, and past trips.</p>
 <h4 id="step-2-understand-the-ai-context-provider-pattern">Step 2: Understand the AI Context Provider Pattern<a class="headerlink" href="#step-2-understand-the-ai-context-provider-pattern" title="Permanent link">¶</a></h4>
-<p>Open <code>src/backend/Services/UserProfileMemoryProvider.cs</code>. This class implements <code>IAIContextProvider</code>, which allows us to inject custom context into the agent's reasoning process.</p>
-<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">UserProfileMemoryProvider</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IAIContextProvider</span>
+<p>Open <code>src/backend/Services/UserProfileMemoryProvider.cs</code>. This class implements <code>AIContextProvider</code>, which allows us to inject custom context into the agent's reasoning process.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">UserProfileMemoryProvider</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">AIContextProvider</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="c1">// Called BEFORE sending messages to the LLM</span>
 <span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="w"> </span><span class="nf">ProvideAIContextAsync</span><span class="p">(</span>
@@ -634,26 +618,23 @@ Session 2: Agent: "Based on your hiking interests and $2000 budget..." ✅
 <span class="w">    </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Existing code omitted for brevity</span>
 
+
+
 <span class="w">        </span><span class="c1">// Add this section:</span>
-<span class="w">        </span><span class="n">AIContextProviderFactory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="c1">// Extract userId from HTTP context</span>
-<span class="w">            </span><span class="kt">string</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_httpContextAccessor</span><span class="p">.</span><span class="n">HttpContext</span><span class="o">?.</span><span class="n">Items</span><span class="p">[</span><span class="s">"UserId"</span><span class="p">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span>
-<span class="w">                            </span><span class="o">??</span><span class="w"> </span><span class="s">"demo-user"</span><span class="p">;</span><span class="w"> </span><span class="c1">// Default for testing</span>
+<span class="w">        </span><span class="n">AIContextProviders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="k">new</span><span class="w"> </span><span class="nf">UserProfileMemoryProvider</span><span class="p">(</span>
+<span class="w">            </span><span class="n">_chatClient</span><span class="p">,</span>
+<span class="w">            </span><span class="n">_cosmosDatabase</span><span class="o">!</span><span class="p">,</span>
+<span class="w">            </span><span class="n">_config</span><span class="p">.</span><span class="n">CosmosDbUserProfileContainer</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="s">"UserProfiles"</span><span class="p">,</span>
+<span class="w">            </span><span class="k">new</span><span class="w"> </span><span class="n">UserProfileMemoryProviderScope</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">UserId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userId</span><span class="p">,</span>
+<span class="w">                </span><span class="n">ApplicationId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">ApplicationId</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="n">loggerFactory</span><span class="p">:</span><span class="w"> </span><span class="n">_loggerFactory</span><span class="p">)]</span>
 
-<span class="w">            </span><span class="c1">// Create memory provider scoped to this user</span>
-<span class="w">            </span><span class="kt">var</span><span class="w"> </span><span class="n">userProfileMemoryProvider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">UserProfileMemoryProvider</span><span class="p">(</span>
-<span class="w">                </span><span class="n">userId</span><span class="p">:</span><span class="w"> </span><span class="n">userId</span><span class="p">,</span>
-<span class="w">                </span><span class="n">applicationId</span><span class="p">:</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">ApplicationId</span><span class="p">,</span>
-<span class="w">                </span><span class="n">agentId</span><span class="p">:</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">AgentName</span><span class="p">,</span>
-<span class="w">                </span><span class="n">cosmosDatabase</span><span class="p">:</span><span class="w"> </span><span class="n">_database</span><span class="p">,</span>
-<span class="w">                </span><span class="n">containerName</span><span class="p">:</span><span class="w"> </span><span class="n">_config</span><span class="p">.</span><span class="n">CosmosDbContainerNames</span><span class="o">?.</span><span class="n">UserProfiles</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="s">"UserProfiles"</span><span class="p">,</span>
-<span class="w">                </span><span class="n">chatClient</span><span class="p">:</span><span class="w"> </span><span class="n">_chatClient</span><span class="p">,</span>
-<span class="w">                </span><span class="n">logger</span><span class="p">:</span><span class="w"> </span><span class="n">_loggerFactory</span><span class="p">.</span><span class="n">CreateLogger</span><span class="o">&lt;</span><span class="n">UserProfileMemoryProvider</span><span class="o">&gt;</span><span class="p">()</span>
-<span class="w">            </span><span class="p">);</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">userProfileMemoryProvider</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
+
 
 <span class="w">        </span><span class="c1">// Existing code omitted for brevity</span>
 
