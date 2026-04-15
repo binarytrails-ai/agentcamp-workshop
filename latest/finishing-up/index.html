@@ -400,10 +400,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#delete-azure-resources" class="md-nav__link">
+  <a href="#cleanup-delete-azure-resources" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete Azure Resources
+        Cleanup: Delete Azure Resources
       
     </span>
   </a>
@@ -426,17 +426,6 @@
     <span class="md-ellipsis">
       
         Delete Your GitHub Codespace
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        
       
     </span>
   </a>
@@ -505,10 +494,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#delete-azure-resources" class="md-nav__link">
+  <a href="#cleanup-delete-azure-resources" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Delete Azure Resources
+        Cleanup: Delete Azure Resources
       
     </span>
   </a>
@@ -537,17 +526,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -566,34 +544,42 @@
 
 
 <h1 id="finishing-up">Finishing Up<a class="headerlink" href="#finishing-up" title="Permanent link">¶</a></h1>
+<p>Congratulations on completing the <strong>Agents That Remember</strong> workshop!</p>
 <p>Here are some final steps to wrap up your experience.</p>
-<h2 id="delete-azure-resources">Delete Azure Resources<a class="headerlink" href="#delete-azure-resources" title="Permanent link">¶</a></h2>
+<hr>
+<h2 id="cleanup-delete-azure-resources">Cleanup: Delete Azure Resources<a class="headerlink" href="#cleanup-delete-azure-resources" title="Permanent link">¶</a></h2>
 <p>To avoid ongoing charges, delete your Azure resource group.  </p>
 <ol>
 <li>Open a terminal and navigate to the root of your project.</li>
 <li>
-<p>Run the following command.</p>
-<div class="highlight"><pre><span></span><code> <span class="n">azd</span> <span class="n">down</span>
+<p>Run the following command:</p>
+<div class="highlight"><pre><span></span><code>azd<span class="w"> </span>down
 </code></pre></div>
 </li>
 </ol>
 <p>You can alternatively delete the resource group using the Azure Portal:</p>
 <ul>
-<li>Go to the <a href="https://portal.azure.com">Azure Portal</a>.  </li>
-<li>Click <strong>Resource groups</strong> in the left menu.  </li>
-<li>Select your resource group.  </li>
-<li>Click <strong>Delete resource group</strong>.</li>
+<li>Go to the <a href="https://portal.azure.com">Azure Portal</a></li>
+<li>Click <strong>Resource groups</strong> in the left menu</li>
+<li>Select your resource group (e.g., <code>rg-aiagent-ws-dev</code>)  </li>
+<li>Click <strong>Delete resource group</strong></li>
 </ul>
 <hr>
 <h2 id="save-your-changes-to-github">Save Your Changes to GitHub<a class="headerlink" href="#save-your-changes-to-github" title="Permanent link">¶</a></h2>
-<p>If you have made changes to the files, you can save them to your forked GitHub repository.</p>
+<p>If you've made changes to the files, you can save them to your forked GitHub repository:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>.
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"completed workshop changes"</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main
+</code></pre></div>
 <hr>
 <h2 id="delete-your-github-codespace">Delete Your GitHub Codespace<a class="headerlink" href="#delete-your-github-codespace" title="Permanent link">¶</a></h2>
+<p>If you used GitHub Codespaces:</p>
 <ol>
-<li>Go to <a href="https://github.com/codespaces">github.com/codespaces</a>.  </li>
-<li>To the right of the codespace you want to delete, click ..., then click to  Delete.</li>
+<li>Go to <a href="https://github.com/codespaces">github.com/codespaces</a></li>
+<li>To the right of the codespace you want to delete, click <strong>...</strong>, then click <strong>Delete</strong></li>
 </ol>
-<h2 id="_1"><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../media/delete-codespace.png" data-desc-position="bottom"><img alt="Delete Codespace" src="../media/delete-codespace.png"></a><a class="headerlink" href="#_1" title="Permanent link">¶</a></h2>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../media/delete-codespace.png" data-desc-position="bottom"><img alt="Delete Codespace" src="../media/delete-codespace.png"></a></p>
+<hr>
 
 
 
