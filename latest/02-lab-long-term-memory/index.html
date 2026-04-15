@@ -9,13 +9,13 @@
         <meta name="author" content="Rakesh Lakshminarayanana">
       
       
-        <link rel="canonical" href="https://binarytrails-ai.github.io/agentcamp-workshop/latest/01-lab-semantic-memory/">
+        <link rel="canonical" href="https://binarytrails-ai.github.io/agentcamp-workshop/latest/02-lab-long-term-memory/">
       
       
-        <link rel="prev" href="../00-setup_instructions/">
+        <link rel="prev" href="../01-lab-semantic-memory/">
       
       
-        <link rel="next" href="../02-lab-long-term-memory/">
+        <link rel="next" href="../finishing-up/">
       
       
         
@@ -26,7 +26,7 @@
     
     
       
-        <title>Lab 1 - Semantic Memory - Designing Memory-Driven AI Systems</title>
+        <title>Lab 2 - Long-Term Memory - Designing Memory-Driven AI Systems</title>
       
     
     
@@ -89,7 +89,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#lab-1-semantic-memory-understanding-meaning-through-vector-search" class="md-skip">
+        <a href="#lab-2-long-term-memory-persistent-user-profiles" class="md-skip">
           Skip to content
         </a>
       
@@ -124,7 +124,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Lab 1 - Semantic Memory
+              Lab 2 - Long-Term Memory
             
           </span>
         </div>
@@ -256,6 +256,33 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-lab-semantic-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 - Semantic Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -275,7 +302,7 @@
   <span class="md-ellipsis">
     
   
-    Lab 1 - Semantic Memory
+    Lab 2 - Long-Term Memory
   
 
     
@@ -293,7 +320,7 @@
   <span class="md-ellipsis">
     
   
-    Lab 1 - Semantic Memory
+    Lab 2 - Long-Term Memory
   
 
     
@@ -319,10 +346,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#understanding-semantic-memory" class="md-nav__link">
+  <a href="#understanding-long-term-memory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Understanding Semantic Memory
+        Understanding Long-Term Memory
       
     </span>
   </a>
@@ -366,33 +393,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../02-lab-long-term-memory/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Lab 2 - Long-Term Memory
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -505,10 +505,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
       
         <li class="md-nav__item">
-  <a href="#understanding-semantic-memory" class="md-nav__link">
+  <a href="#understanding-long-term-memory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Understanding Semantic Memory
+        Understanding Long-Term Memory
       
     </span>
   </a>
@@ -565,56 +565,136 @@
 
 
 
-<h1 id="lab-1-semantic-memory-understanding-meaning-through-vector-search">Lab 1: Semantic Memory - Understanding Meaning Through Vector Search<a class="headerlink" href="#lab-1-semantic-memory-understanding-meaning-through-vector-search" title="Permanent link">¶</a></h1>
-<p>In this lab, you will upgrade the agent from static knowledge to <strong>semantic memory</strong> using vector embeddings and similarity search.</p>
-<p>You will enable your agent to understand the <em>meaning</em> behind words, not just exact text matches. By the end of this lab, you will:</p>
+<h1 id="lab-2-long-term-memory-persistent-user-profiles">Lab 2: Long-Term Memory - Persistent User Profiles<a class="headerlink" href="#lab-2-long-term-memory-persistent-user-profiles" title="Permanent link">¶</a></h1>
+<p>In this lab, you will add <strong>long-term memory</strong> to your agent, enabling it to remember user preferences across sessions and learn from conversations over time.</p>
+<p>You will implement a bidirectional memory system that both reads stored profiles and extracts new preferences from conversation, creating personalized experiences.</p>
+<p>By the end of this lab, you will:</p>
 <ul>
-<li>✅ Understand semantic memory and how it differs from keyword search</li>
-<li>✅ Learn how vector embeddings capture meaning</li>
-<li>✅ Implement vector search in Cosmos DB</li>
+<li>✅ Understand long-term memory in AI agents</li>
+<li>✅ Implement profile injection using AI Context Providers</li>
+<li>✅ Enable automatic preference extraction from conversation</li>
 </ul>
 <hr>
-<h2 id="understanding-semantic-memory">Understanding Semantic Memory<a class="headerlink" href="#understanding-semantic-memory" title="Permanent link">¶</a></h2>
-<p><strong>Semantic memory</strong> in AI agents refers to the system's ability to understand and retrieve information based on <em>meaning</em> rather than exact words.</p>
-<p>In human cognition, semantic memory lets you know:</p>
-<ul>
-<li>"Beach" relates to "ocean", "sand", "coastal"</li>
-<li>"Expensive" contrasts with "budget-friendly"</li>
-</ul>
-<p>In AI systems, we achieve this through <strong>vector embeddings</strong> - numerical representations that capture semantic relationships.</p>
+<h2 id="understanding-long-term-memory">Understanding Long-Term Memory<a class="headerlink" href="#understanding-long-term-memory" title="Permanent link">¶</a></h2>
+<p><strong>Long-term memory</strong> in AI agents refers to information that persists across sessions, stored externally (databases, files) rather than in the conversation context.</p>
+<p>Without long-term memory:
+</p><div class="highlight"><pre><span></span><code>Session 1: User shares preferences (budget, interests, dietary needs)
+Session 2: Agent asks the same questions again ❌
+</code></pre></div><p></p>
+<p>With long-term memory:
+</p><div class="highlight"><pre><span></span><code>Session 1: User shares preferences → Stored
+Session 2: Agent: "Based on your hiking interests and $2000 budget..." ✅
+</code></pre></div><p></p>
 <hr>
 <h2 id="instructions">Instructions<a class="headerlink" href="#instructions" title="Permanent link">¶</a></h2>
-<h3 id="step-1-understand-the-embedding-process">Step 1: Understand the Embedding Process<a class="headerlink" href="#step-1-understand-the-embedding-process" title="Permanent link">¶</a></h3>
-<p>Open <code>scripts/seed-cosmosdb/Program.cs</code> and review how the model is used to generate embeddings for each destination.</p>
-<h3 id="step-2-implement-vector-search">Step 2: Implement Vector Search<a class="headerlink" href="#step-2-implement-vector-search" title="Permanent link">¶</a></h3>
-<p>Open <code>src/backend/Tools/DestinationSearchTool.cs</code> and review the semantic search implementation. This tool takes a user query, generates an embedding, and performs a vector search in Cosmos DB to find the most semantically similar destinations.</p>
-<h3 id="step-3-update-agent-configuration">Step 3: Update Agent Configuration<a class="headerlink" href="#step-3-update-agent-configuration" title="Permanent link">¶</a></h3>
-<p>Configure the agent to use the new semantic search tool. Open <code>src/backend/Agents/ContosoTravelAgentBuilder.cs</code> and update the tools list to include the semantic search tool:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="n">AIFunctionFactory</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span>
-<span class="w">        </span><span class="n">DestinationSearchTool</span><span class="p">.</span><span class="n">SearchDestinations</span><span class="p">,</span>
-<span class="w">        </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">"SearchDestinations"</span><span class="p">,</span>
-<span class="w">        </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Search for travel destinations using semantic understanding"</span>
-<span class="w">    </span><span class="p">)</span>
+<h3 id="part-a-profile-injection">Part A:  Profile Injection<a class="headerlink" href="#part-a-profile-injection" title="Permanent link">¶</a></h3>
+<p>Let's start by implementing read-only profile memory.</p>
+<h4 id="step-1-review-the-user-profile-data">Step 1: Review the User Profile Data<a class="headerlink" href="#step-1-review-the-user-profile-data" title="Permanent link">¶</a></h4>
+<p>Open <a href="../../data/user-profiles.json">data/user-profiles.json</a>. This is the sample data for user profiles that will be loaded into Cosmos DB. </p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo-user_ContosoTravelApp_TravelAssistant"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"userId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"demo-user"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"applicationId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ContosoTravelApp"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"agentId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TravelAssistant"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"travelStyle"</span><span class="p">:</span><span class="w"> </span><span class="s2">"adventure seeker"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"budgetRange"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$2000-3000"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"interests"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"hiking"</span><span class="p">,</span><span class="w"> </span><span class="s2">"local cuisine"</span><span class="p">,</span><span class="w"> </span><span class="s2">"photography"</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"dietaryRequirements"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vegetarian"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"numberOfTravelers"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"tripDuration"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"pastDestinations"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">]</span>
 </code></pre></div>
+<h4 id="step-2-understand-the-ai-context-provider-pattern">Step 2: Understand the AI Context Provider Pattern<a class="headerlink" href="#step-2-understand-the-ai-context-provider-pattern" title="Permanent link">¶</a></h4>
+<p>Open <code>src/backend/Services/UserProfileMemoryProvider.cs</code>. This class implements <code>IAIContextProvider</code>, which allows us to inject custom context into the agent's reasoning process.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">UserProfileMemoryProvider</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IAIContextProvider</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Called BEFORE sending messages to the LLM</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="w"> </span><span class="nf">ProvideAIContextAsync</span><span class="p">(</span>
+<span class="w">        </span><span class="n">AIContext</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">CancellationToken</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Called AFTER receiving LLM response</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="n">Task</span><span class="w"> </span><span class="nf">StoreAIContextAsync</span><span class="p">(</span>
+<span class="w">        </span><span class="n">AIContext</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="n">CancellationToken</span><span class="w"> </span><span class="n">cancellationToken</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="step-3-enable-profile-memory-in-agent">Step 3: Enable Profile Memory in Agent<a class="headerlink" href="#step-3-enable-profile-memory-in-agent" title="Permanent link">¶</a></h4>
+<p>Open <code>src/backend/Agents/ContosoTravelAgentBuilder.cs</code> and add the <code>UserProfileMemoryProvider</code> to the agent configuration. This will enable the agent to have access to user profile information during reasoning.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="n">Task</span><span class="o">&lt;</span><span class="n">AIAgent</span><span class="o">&gt;</span><span class="w"> </span><span class="n">CreateAsync</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">agent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_chatClient</span><span class="p">.</span><span class="n">CreateAIAgent</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ChatClientAgentOptions</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Existing code omitted for brevity</span>
+
+<span class="w">        </span><span class="c1">// Add this section:</span>
+<span class="w">        </span><span class="n">AIContextProviderFactory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Extract userId from HTTP context</span>
+<span class="w">            </span><span class="kt">string</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_httpContextAccessor</span><span class="p">.</span><span class="n">HttpContext</span><span class="o">?.</span><span class="n">Items</span><span class="p">[</span><span class="s">"UserId"</span><span class="p">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span>
+<span class="w">                            </span><span class="o">??</span><span class="w"> </span><span class="s">"demo-user"</span><span class="p">;</span><span class="w"> </span><span class="c1">// Default for testing</span>
+
+<span class="w">            </span><span class="c1">// Create memory provider scoped to this user</span>
+<span class="w">            </span><span class="kt">var</span><span class="w"> </span><span class="n">userProfileMemoryProvider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">UserProfileMemoryProvider</span><span class="p">(</span>
+<span class="w">                </span><span class="n">userId</span><span class="p">:</span><span class="w"> </span><span class="n">userId</span><span class="p">,</span>
+<span class="w">                </span><span class="n">applicationId</span><span class="p">:</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">ApplicationId</span><span class="p">,</span>
+<span class="w">                </span><span class="n">agentId</span><span class="p">:</span><span class="w"> </span><span class="n">Constants</span><span class="p">.</span><span class="n">AgentName</span><span class="p">,</span>
+<span class="w">                </span><span class="n">cosmosDatabase</span><span class="p">:</span><span class="w"> </span><span class="n">_database</span><span class="p">,</span>
+<span class="w">                </span><span class="n">containerName</span><span class="p">:</span><span class="w"> </span><span class="n">_config</span><span class="p">.</span><span class="n">CosmosDbContainerNames</span><span class="o">?.</span><span class="n">UserProfiles</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="s">"UserProfiles"</span><span class="p">,</span>
+<span class="w">                </span><span class="n">chatClient</span><span class="p">:</span><span class="w"> </span><span class="n">_chatClient</span><span class="p">,</span>
+<span class="w">                </span><span class="n">logger</span><span class="p">:</span><span class="w"> </span><span class="n">_loggerFactory</span><span class="p">.</span><span class="n">CreateLogger</span><span class="o">&lt;</span><span class="n">UserProfileMemoryProvider</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="w">            </span><span class="p">);</span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">userProfileMemoryProvider</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Existing code omitted for brevity</span>
+
+<span class="w">    </span><span class="p">});</span><span class="w"> </span>
+
+<span class="p">}</span>
+</code></pre></div>
 <hr>
+<h3 id="part-b-dynamic-memory-learning-from-conversation">Part B: Dynamic Memory - Learning From Conversation<a class="headerlink" href="#part-b-dynamic-memory-learning-from-conversation" title="Permanent link">¶</a></h3>
+<p>Now let's review how the agent can learn and update user preferences dynamically from conversation.</p>
+<h4 id="step-4-understand-the-extraction-mechanism">Step 4: Understand the Extraction Mechanism<a class="headerlink" href="#step-4-understand-the-extraction-mechanism" title="Permanent link">¶</a></h4>
+<p>Open <code>src/backend/Services/UserProfileMemoryProvider.cs</code> and review the <code>StoreAIContextAsync</code> method. This is called after the agent responds to the user.</p>
+<p><strong>How Dynamic Extraction Works:</strong></p>
+<ol>
+<li>After the agent responds to the user, <code>StoreAIContextAsync</code> is called automatically.</li>
+<li>The recent conversation may have new preferences or information shared by the user (e.g., "I love hiking and outdoor activities"). We can use the LLM to extract this information from the conversation.</li>
+<li>The LLM analyzes the conversation and identifies any new preferences or updates to the user's profile. It returns a structured profile update.</li>
+<li>The new profile information is merged with the existing profile and saved back to Cosmos DB. The latest profile is now available for future conversations, allowing the agent to adapt and personalize responses over time.</li>
+</ol>
 <h2 id="test-your-implementation">Test Your Implementation<a class="headerlink" href="#test-your-implementation" title="Permanent link">¶</a></h2>
 <p>Refer to the <strong><a href="../00-setup_instructions/#running-the-application-locally">Running the Application Locally</a></strong> section in the Environment Setup guide to start the application.</p>
-<h3 id="test-scenarios-semantic-understanding">Test Scenarios: Semantic Understanding<a class="headerlink" href="#test-scenarios-semantic-understanding" title="Permanent link">¶</a></h3>
-<p>Try these queries to see how semantic search understands meaning beyond exact keywords.</p>
-<p><strong>Example 1</strong></p>
-<div class="highlight"><pre><span></span><code>I'm interested in beaches. Can you suggest any destinations?
+<h3 id="test-scenarios-personalization-and-learning">Test Scenarios: Personalization and Learning<a class="headerlink" href="#test-scenarios-personalization-and-learning" title="Permanent link">¶</a></h3>
+<p>Try out the agent's ability to remember your preferences and provide personalized recommendations.</p>
+<p><strong>Step 1: Build Your Profile</strong></p>
+<p>Start a conversation with:</p>
+<div class="highlight"><pre><span></span><code>Can you help me plan a trip?
 </code></pre></div>
-<p><em>Expected:</em> The agent returns coastal destinations with beaches, oceanfront locations, and seaside activities - understanding the semantic relationship between "beaches" and related concepts.</p>
-<hr>
-<p><strong>Example 2</strong></p>
-<div class="highlight"><pre><span></span><code>I'd love somewhere with mountains and hiking. What do you recommend?
+<p><em>Expected:</em> The agent asks about your preferences (budget, travel style, interests).</p>
+<p><strong>Step 2: Share Your Preferences</strong></p>
+<p>Respond with your details:</p>
+<div class="highlight"><pre><span></span><code>I want to plan a trip with a budget of around $2,000. I love hiking and outdoor activities.
 </code></pre></div>
-<p><em>Expected:</em> The agent understands the intent and returns destinations with mountainous terrain, hiking trails, and outdoor adventure activities.</p>
+<p><em>Expected:</em> The agent provides tailored destination recommendations and stores your profile (travel style, budget, interests, past trips).</p>
+<p><strong>Step 3: Test Memory Persistence</strong></p>
+<p>Start a <strong>New Chat</strong> and ask:</p>
+<div class="highlight"><pre><span></span><code>I want to plan my next vacation
+</code></pre></div>
+<p><em>Expected:</em> The agent recalls your stored preferences and provides personalized recommendations without asking for them again.</p>
 <hr>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
-<p>👉 <strong><a href="../02-lab-long-term-memory/">Lab 2: Personalization using Long-Term Memory</a></strong></p>
+<p>👉 <strong><a href="./03-lab-agentic-search.md">Lab 3: Intelligent Search with Agentic RAG</a></strong></p>
 <hr>
 
 
@@ -653,7 +733,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer">
         
           
-          <a href="../00-setup_instructions/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Environment Setup">
+          <a href="../01-lab-semantic-memory/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 1 - Semantic Memory">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
@@ -663,20 +743,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Environment Setup
+                Lab 1 - Semantic Memory
               </div>
             </div>
           </a>
         
         
           
-          <a href="../02-lab-long-term-memory/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 2 - Long-Term Memory">
+          <a href="../finishing-up/" class="md-footer__link md-footer__link--next" aria-label="Next: Finishing Up">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Lab 2 - Long-Term Memory
+                Finishing Up
               </div>
             </div>
             <div class="md-footer__button md-icon">
