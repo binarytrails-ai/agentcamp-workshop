@@ -598,6 +598,12 @@
 <span class="w">    </span><span class="p">)</span>
 <span class="p">]</span>
 </code></pre></div>
+<h3 id="step-4-add-tool-usage-instructions-to-the-prompt">Step 4: Add Tool Usage Instructions to the Prompt<a class="headerlink" href="#step-4-add-tool-usage-instructions-to-the-prompt" title="Permanent link">¶</a></h3>
+<p>Help the agent understand when to use the search tool by adding a <code>## TOOL USAGE</code> section to the <code>AgentInstructions</code> constant.</p>
+<div class="highlight"><pre><span></span><code><span class="err">##</span><span class="w"> </span><span class="n">TOOL</span><span class="w"> </span><span class="n">USAGE</span>
+<span class="o">-</span><span class="w"> </span><span class="o">**</span><span class="n">SearchDestinations</span><span class="o">**</span><span class="p">:</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="k">this</span><span class="w"> </span><span class="n">tool</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">travelers</span><span class="w"> </span><span class="n">ask</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">destination</span><span class="w"> </span><span class="n">recommendations</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">mention</span><span class="w"> </span><span class="n">interests</span><span class="o">/</span><span class="n">activities</span>
+<span class="w">  </span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">g</span><span class="p">.,</span><span class="w"> </span><span class="s">"beaches"</span><span class="p">,</span><span class="w"> </span><span class="s">"adventure"</span><span class="p">,</span><span class="w"> </span><span class="s">"hiking"</span><span class="p">,</span><span class="w"> </span><span class="s">"wine"</span><span class="p">,</span><span class="w"> </span><span class="s">"family-friendly"</span><span class="p">,</span><span class="w"> </span><span class="s">"cultural"</span><span class="p">)</span>
+</code></pre></div>
 <hr>
 <h2 id="test-your-implementation">Test Your Implementation<a class="headerlink" href="#test-your-implementation" title="Permanent link">¶</a></h2>
 <p>Refer to the <strong><a href="../00-setup_instructions/#running-the-application-locally">Running the Application Locally</a></strong> section in the Environment Setup guide to start the application.</p>
