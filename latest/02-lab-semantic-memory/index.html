@@ -589,7 +589,8 @@
 <h3 id="step-2-implement-vector-search">Step 2: Implement Vector Search<a class="headerlink" href="#step-2-implement-vector-search" title="Permanent link">¶</a></h3>
 <p>Open <code>src/backend/Tools/DestinationSearchTool.cs</code> and review the semantic search implementation. This tool takes a user query, generates an embedding, and performs a vector search in Cosmos DB to find the most semantically similar destinations.</p>
 <h3 id="step-3-update-agent-configuration">Step 3: Update Agent Configuration<a class="headerlink" href="#step-3-update-agent-configuration" title="Permanent link">¶</a></h3>
-<p>Configure the agent to use the new semantic search tool. Open <code>src/backend/Agents/ContosoTravelAgentBuilder.cs</code> and update the tools list to include the semantic search tool in the agent configuration.</p>
+<p>Configure the agent to use the new semantic search tool. </p>
+<p>Open <code>src/backend/Agents/ContosoTravelAgentBuilder.cs</code> and update the tools list to include the semantic search tool in the agent configuration.</p>
 <div class="highlight"><pre><span></span><code><span class="n">Tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="n">AIFunctionFactory</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span>
 <span class="w">            </span><span class="n">_destinationSearchTool</span><span class="p">.</span><span class="n">SearchDestinations</span><span class="p">,</span>
