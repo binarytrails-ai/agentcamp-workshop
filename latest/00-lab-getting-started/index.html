@@ -566,7 +566,7 @@
 
 
 <h1 id="lab-0-getting-started-your-first-ai-agent">Lab 0: Getting Started - Your First AI Agent<a class="headerlink" href="#lab-0-getting-started-your-first-ai-agent" title="Permanent link">¶</a></h1>
-<p>Welcome to your first hands-on lab! In this lab, you'll learn about <strong>short-term memory</strong>. This is required for any agent to maintain context within a conversation and respond clearly.</p>
+<p>Welcome to your first hands-on lab! In this lab, you'll learn about <strong>short-term memory</strong>. This is required for any agent to maintain context within a conversation to respond accurately.</p>
 <p>By the end of this lab, you will:</p>
 <ul>
 <li>✅ Understand short-term memory</li>
@@ -577,7 +577,7 @@
 <p><strong>Short-term memory</strong> in AI agents is the conversation context that persists within a single session. It's how the agent "remembers" what was said earlier in the conversation.</p>
 <p>When you chat with an AI agent, each message you send includes:</p>
 <ol>
-<li><strong>The conversation history</strong> - All previous messages in the session</li>
+<li><strong>The conversation history</strong> - Previous messages in the session</li>
 <li><strong>Your new message</strong> - The current input</li>
 <li><strong>System instructions</strong> - The agent's guidelines</li>
 </ol>
@@ -589,9 +589,9 @@
 [Assistant]: Great choice! [generates response based on full context]
 </code></pre></div>
 <h3 id="context-window-limitations">Context Window Limitations<a class="headerlink" href="#context-window-limitations" title="Permanent link">¶</a></h3>
-<p>Language models have a <strong>context window</strong> - a limit on how much text they can process at once. For example:</p>
+<p>Language models have a context window which limits how much conversation history they can consider at once. For example:</p>
 <ul>
-<li>GPT-4o: 128,000 tokens (~96,000 words)</li>
+<li>GPT-4o: 128,000 tokens</li>
 <li>GPT-4o-mini: 128,000 tokens</li>
 </ul>
 <p>When conversations get very long, older messages may need to be removed or summarized to stay within the limit.</p>
@@ -614,7 +614,7 @@
 <li><strong>ChatOptions.Instructions</strong>: The system prompt that defines the agent's behavior</li>
 <li><strong>ChatOptions.Tools</strong>: List of tools the agent can call</li>
 </ul>
-<p>While this lab uses a minimal configuration, <code>ChatOptions</code> supports many additional settings - Temperature, MaxOutputTokens, TopP, ResponseFormat and more to control the agent's responses.</p>
+<p>While this lab uses a minimal configuration, <code>ChatOptions</code> supports many additional settings - <code>Temperature</code>, <code>MaxOutputTokens</code>, <code>TopP</code>, <code>ResponseFormat</code> and more to control the agent's responses.</p>
 <p>The agent is built on top of <code>Microsoft.Extensions.AI.IChatClient</code>, which provides a unified interface for different LLM providers. This means you can switch between models (Azure OpenAI, OpenAI, etc.) without changing your agent code.</p>
 <hr>
 <h2 id="test-your-implementation">Test Your Implementation<a class="headerlink" href="#test-your-implementation" title="Permanent link">¶</a></h2>
@@ -623,7 +623,7 @@
 <div class="highlight"><pre><span></span><code>User: Can you help me plan a trip?
 </code></pre></div>
 <p>The assistant should ask you for more details. Then continue the conversation by answering with more information about your travel preferences (e.g., "adventure travel", "family-friendly", "beaches", etc.) and see how the agent maintains context across messages to provide relevant responses.</p>
-<p>In the Trace window, you can see the conversation history between the user and the agent.</p>
+<p>From the Trace window in the .NET Aspire dashboard, you can see the conversation history between the user and the agent.</p>
 <hr>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
 <p>👉 <strong><a href="../01-lab-semantic-memory/">Lab 1: Semantic Memory - Knowledge Retrieval</a></strong></p>
