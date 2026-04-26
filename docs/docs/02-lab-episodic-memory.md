@@ -76,7 +76,7 @@ With:
 
 The `EnrichQueryAsync` method uses the LLM to extract entities and add semantically related travel terms, improving vector search recall.
 
-### Step 4: Verify Agent Configuration
+### Step 4: Update Agent Configuration
 
 Open src/backend/Agents/ContosoTravelAgentBuilder.cs and update the tools list to include the search tool in the agent configuration.
 
