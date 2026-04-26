@@ -477,7 +477,25 @@
 <p>Notice how the tool description guides the LLM on when to use it:
 </p><div class="highlight"><pre><span></span><code><span class="na">[Description("Search past conversations to recall previous discussions, bookings, preferences, and interactions...")]</span>
 </code></pre></div><p></p>
-<h3 id="step-3-verify-agent-configuration">Step 3: Verify Agent Configuration<a class="headerlink" href="#step-3-verify-agent-configuration" title="Permanent link">¶</a></h3>
+<h3 id="step-3-add-query-enrichment">Step 3: Add Query Enrichment<a class="headerlink" href="#step-3-add-query-enrichment" title="Permanent link">¶</a></h3>
+<p>Query enrichment improves search recall by extracting entities and adding related terms before vector search.</p>
+<p><strong>Example transformation:</strong>
+</p><div class="highlight"><pre><span></span><code>User: "Tell me about my Sydney trip"
+→ Basic query: "Sydney trip"
+→ Enriched query: "Sydney travel hotel flight accommodation booking activities"
+</code></pre></div><p></p>
+<p>Open <code>src/backend/Tools/ChatHistorySearchTool.cs</code> and locate the <code>SearchChatHistory</code> method.</p>
+<p>Add enrichment before generating embeddings by replacing:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="c1">// Generate embedding for the enriched search query</span>
+<span class="w">  </span><span class="kt">var</span><span class="w"> </span><span class="n">embeddingResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_embeddingClient</span><span class="p">.</span><span class="n">GenerateEmbeddingAsync</span><span class="p">(</span><span class="n">query</span><span class="p">);</span>
+</code></pre></div>
+<p>With:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="kt">var</span><span class="w"> </span><span class="n">enrichedQuery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">EnrichQueryAsync</span><span class="p">(</span><span class="n">query</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// Generate embedding for the enriched search query</span>
+<span class="w">  </span><span class="kt">var</span><span class="w"> </span><span class="n">embeddingResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_embeddingClient</span><span class="p">.</span><span class="n">GenerateEmbeddingAsync</span><span class="p">(</span><span class="n">enrichedQuery</span><span class="p">);</span>
+</code></pre></div>
+<p>The <code>EnrichQueryAsync</code> method uses the LLM to extract entities and add semantically related travel terms, improving vector search recall.</p>
+<h3 id="step-4-verify-agent-configuration">Step 4: Verify Agent Configuration<a class="headerlink" href="#step-4-verify-agent-configuration" title="Permanent link">¶</a></h3>
 <p>Open src/backend/Agents/ContosoTravelAgentBuilder.cs and update the tools list to include the search tool in the agent configuration.</p>
 <div class="highlight"><pre><span></span><code><span class="n">Tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="n">AIFunctionFactory</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span>
@@ -486,12 +504,12 @@
 <span class="w">        </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Search past conversations to recall previous discussions and bookings"</span><span class="p">)</span>
 <span class="p">]</span>
 </code></pre></div>
-<h3 id="step-4-update-the-prompt-instructions">Step 4: Update the Prompt Instructions<a class="headerlink" href="#step-4-update-the-prompt-instructions" title="Permanent link">¶</a></h3>
+<h3 id="step-5-update-the-prompt-instructions">Step 5: Update the Prompt Instructions<a class="headerlink" href="#step-5-update-the-prompt-instructions" title="Permanent link">¶</a></h3>
 <p>Help the agent understand when to use the search tool by adding a ## TOOL USAGE section to the AgentInstructions constant.</p>
-<div class="highlight"><pre><span></span><code><span class="err">##</span><span class="w"> </span><span class="n">TOOL</span><span class="w"> </span><span class="n">USAGE</span>
-<span class="o">-</span><span class="w"> </span><span class="o">**</span><span class="n">SearchChatHistory</span><span class="o">**</span><span class="p">:</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="n">references</span><span class="w"> </span><span class="n">past</span><span class="w"> </span><span class="n">conversations</span><span class="w"> </span><span class="p">(</span><span class="s">"last time"</span><span class="p">,</span><span class="w"> </span><span class="s">"remember when"</span><span class="p">,</span><span class="w"> </span>
-<span class="w">  </span><span class="s">"previously"</span><span class="p">),</span><span class="w"> </span><span class="n">asks</span><span class="w"> </span><span class="n">about</span><span class="w"> </span><span class="n">previous</span><span class="w"> </span><span class="n">bookings</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">recommendations</span><span class="p">,</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">conversation</span><span class="w"> </span>
-<span class="w">  </span><span class="n">history</span><span class="w"> </span><span class="n">would</span><span class="w"> </span><span class="n">help</span><span class="w"> </span><span class="n">personalize</span><span class="w"> </span><span class="n">responses</span><span class="p">.</span>
+<div class="highlight"><pre><span></span><code>## TOOL USAGE
+- **SearchChatHistory**: Use when user references past conversations ("last time", "remember when", 
+  "previously"), asks about previous bookings or recommendations, or when context from conversation 
+  history would help personalize responses.
 </code></pre></div>
 <hr>
 <h2 id="test-your-implementation">Test Your Implementation<a class="headerlink" href="#test-your-implementation" title="Permanent link">¶</a></h2>
