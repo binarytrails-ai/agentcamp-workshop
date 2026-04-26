@@ -617,7 +617,7 @@
 <span class="w">  </span><span class="kt">var</span><span class="w"> </span><span class="n">embeddingResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_embeddingClient</span><span class="p">.</span><span class="n">GenerateEmbeddingAsync</span><span class="p">(</span><span class="n">enrichedQuery</span><span class="p">);</span>
 </code></pre></div>
 <p>The <code>EnrichQueryAsync</code> method uses the LLM to extract entities and add semantically related travel terms, improving vector search recall.</p>
-<h3 id="step-4-verify-agent-configuration">Step 4: Verify Agent Configuration<a class="headerlink" href="#step-4-verify-agent-configuration" title="Permanent link">¶</a></h3>
+<h3 id="step-4-update-agent-configuration">Step 4: Update Agent Configuration<a class="headerlink" href="#step-4-update-agent-configuration" title="Permanent link">¶</a></h3>
 <p>Open src/backend/Agents/ContosoTravelAgentBuilder.cs and update the tools list to include the search tool in the agent configuration.</p>
 <div class="highlight"><pre><span></span><code><span class="n">Tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="n">AIFunctionFactory</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span>
