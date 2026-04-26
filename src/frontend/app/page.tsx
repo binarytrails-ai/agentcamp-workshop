@@ -233,11 +233,11 @@ const Chat = ({
                       </div>
                       <div className="flex items-start gap-2.5 text-gray-700">
                         <span className="text-gray-400 mt-1 text-sm">•</span>
-                        <span>I love hiking. Any recommendations ?</span>
+                        <span>I love hiking. Any recommendations?</span>
                       </div>
                       <div className="flex items-start gap-2.5 text-gray-700">
                         <span className="text-gray-400 mt-1 text-sm">•</span>
-                        <span>I love hiking. Any recommendations ?</span>
+                        <span>What bookings did I make?</span>
                       </div>
                     </div>
                   </div>
