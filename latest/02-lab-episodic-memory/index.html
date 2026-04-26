@@ -9,7 +9,7 @@
         <meta name="author" content="Rakesh Lakshminarayanana">
       
       
-        <link rel="canonical" href="https://binarytrails-ai.github.io/agentcamp-workshop/latest/feedback/">
+        <link rel="canonical" href="https://binarytrails-ai.github.io/agentcamp-workshop/latest/02-lab-episodic-memory/">
       
       
       
@@ -22,7 +22,7 @@
     
     
       
-        <title>Feedback - Designing Memory-Driven AI Systems</title>
+        <title>Lab 2: Conversation Recall with Episodic Memory - Designing Memory-Driven AI Systems</title>
       
     
     
@@ -85,7 +85,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#feedback" class="md-skip">
+        <a href="#lab-2-conversation-recall-with-episodic-memory" class="md-skip">
           Skip to content
         </a>
       
@@ -120,7 +120,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Feedback
+              Lab 2: Conversation Recall with Episodic Memory
             
           </span>
         </div>
@@ -376,6 +376,58 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#understanding-episodic-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understanding Episodic Memory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instructions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-your-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Your Implementation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -391,9 +443,74 @@
 
 
 
-<h1 id="feedback">Feedback<a class="headerlink" href="#feedback" title="Permanent link">¶</a></h1>
-<p>Thank you for participating in this session!</p>
-<p>If you have suggestions or encountered issues, please <a href="https://github.com/binarytrails-ai/agentcamp-workshop/issues" target="_blank">open a GitHub Issue</a>.</p>
+<h1 id="lab-2-conversation-recall-with-episodic-memory">Lab 2: Conversation Recall with Episodic Memory<a class="headerlink" href="#lab-2-conversation-recall-with-episodic-memory" title="Permanent link">¶</a></h1>
+<blockquote>
+<p><strong>Duration</strong>: ~20 minutes</p>
+</blockquote>
+<p>In this lab, you will enable your agent to recall past conversations using <strong>episodic memory</strong>.</p>
+<p>You will enable your agent to remember previous interactions, bookings, and preferences across sessions. By the end of this lab, you will:</p>
+<ul>
+<li>✅ Learn how conversation history is stored with vector embeddings</li>
+<li>✅ Implement conversation recall using vector search in Cosmos DB</li>
+</ul>
+<hr>
+<h2 id="understanding-episodic-memory">Understanding Episodic Memory<a class="headerlink" href="#understanding-episodic-memory" title="Permanent link">¶</a></h2>
+<p><strong>Episodic memory</strong> in AI agents refers to the system's ability to recall specific past interactions and events. This allows the agents to answer questions like: "What bookings did I make?" or "What recommendations did you give me last time?"</p>
+<hr>
+<h2 id="instructions">Instructions<a class="headerlink" href="#instructions" title="Permanent link">¶</a></h2>
+<h3 id="step-1-understand-chat-history-storage">Step 1: Understand Chat History Storage<a class="headerlink" href="#step-1-understand-chat-history-storage" title="Permanent link">¶</a></h3>
+<p>Open <code>scripts/seed-cosmosdb/Program.cs</code> and review how chat history messages are stored with embeddings.</p>
+<p>Notice that each conversation message gets:</p>
+<ul>
+<li>A vector embedding of the content</li>
+<li>Metadata like UserId, ThreadId.</li>
+</ul>
+<h3 id="step-2-review-the-chat-history-search-tool">Step 2: Review the Chat History Search Tool<a class="headerlink" href="#step-2-review-the-chat-history-search-tool" title="Permanent link">¶</a></h3>
+<p>Open <code>src/backend/Tools/ChatHistorySearchTool.cs</code> and review the implementation.</p>
+<p>This tool:</p>
+<ul>
+<li>Takes a natural language query about past conversations</li>
+<li>Generates an embedding for the query</li>
+<li>Performs vector search against chat history in Cosmos DB to find relevant past messages</li>
+<li>Returns the most relevant past messages grouped by conversation thread</li>
+</ul>
+<p>Notice how the tool description guides the LLM on when to use it:
+</p><div class="highlight"><pre><span></span><code><span class="na">[Description("Search past conversations to recall previous discussions, bookings, preferences, and interactions...")]</span>
+</code></pre></div><p></p>
+<h3 id="step-3-verify-agent-configuration">Step 3: Verify Agent Configuration<a class="headerlink" href="#step-3-verify-agent-configuration" title="Permanent link">¶</a></h3>
+<p>Open src/backend/Agents/ContosoTravelAgentBuilder.cs and update the tools list to include the search tool in the agent configuration.</p>
+<div class="highlight"><pre><span></span><code><span class="n">Tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="n">AIFunctionFactory</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span>
+<span class="w">        </span><span class="n">_chatHistorySearchTool</span><span class="p">.</span><span class="n">SearchChatHistory</span><span class="p">,</span>
+<span class="w">        </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">"SearchChatHistory"</span><span class="p">,</span>
+<span class="w">        </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Search past conversations to recall previous discussions and bookings"</span><span class="p">)</span>
+<span class="p">]</span>
+</code></pre></div>
+<h3 id="step-4-update-the-prompt-instructions">Step 4: Update the Prompt Instructions<a class="headerlink" href="#step-4-update-the-prompt-instructions" title="Permanent link">¶</a></h3>
+<p>Help the agent understand when to use the search tool by adding a ## TOOL USAGE section to the AgentInstructions constant.</p>
+<div class="highlight"><pre><span></span><code><span class="err">##</span><span class="w"> </span><span class="n">TOOL</span><span class="w"> </span><span class="n">USAGE</span>
+<span class="o">-</span><span class="w"> </span><span class="o">**</span><span class="n">SearchChatHistory</span><span class="o">**</span><span class="p">:</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="n">references</span><span class="w"> </span><span class="n">past</span><span class="w"> </span><span class="n">conversations</span><span class="w"> </span><span class="p">(</span><span class="s">"last time"</span><span class="p">,</span><span class="w"> </span><span class="s">"remember when"</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="s">"previously"</span><span class="p">),</span><span class="w"> </span><span class="n">asks</span><span class="w"> </span><span class="n">about</span><span class="w"> </span><span class="n">previous</span><span class="w"> </span><span class="n">bookings</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">recommendations</span><span class="p">,</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">conversation</span><span class="w"> </span>
+<span class="w">  </span><span class="n">history</span><span class="w"> </span><span class="n">would</span><span class="w"> </span><span class="n">help</span><span class="w"> </span><span class="n">personalize</span><span class="w"> </span><span class="n">responses</span><span class="p">.</span>
+</code></pre></div>
+<hr>
+<h2 id="test-your-implementation">Test Your Implementation<a class="headerlink" href="#test-your-implementation" title="Permanent link">¶</a></h2>
+<p>Refer to the <strong><a href="../00-setup_instructions/#running-the-application-locally">Running the Application Locally</a></strong> section in the Environment Setup guide to start the application.</p>
+<h3 id="test-scenarios-conversation-recall">Test Scenarios: Conversation Recall<a class="headerlink" href="#test-scenarios-conversation-recall" title="Permanent link">¶</a></h3>
+<p>Try these queries to see how the agent recalls past interactions across different conversation threads.</p>
+<p><strong>Example 1</strong></p>
+<div class="highlight"><pre><span></span><code>What bookings did I make?
+</code></pre></div>
+<p><em>Expected:</em> The agent searches chat history and finds the previous bookings.</p>
+<hr>
+<p><strong>Example 2</strong></p>
+<div class="highlight"><pre><span></span><code>What dining recommendations did you give?
+</code></pre></div>
+<p><em>Expected:</em> The agent recalls previous restaurant recommendations.</p>
+<hr>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">¶</a></h2>
+<p>👉 <strong><a href="../03-lab-semantic-memory/">Lab 3: Knowledge Retrieval with Semantic Memory</a></strong></p>
+<hr>
 
 
 
