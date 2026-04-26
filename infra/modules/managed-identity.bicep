@@ -1,5 +1,10 @@
+@description('Name of the managed identity')
 param name string
+
+@description('Azure region for resource deployment')
 param location string = resourceGroup().location
+
+@description('Tags to apply to all resources')
 param tags object = {}
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {

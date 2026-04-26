@@ -1,4 +1,7 @@
+@description('Azure region for resource deployment')
 param location string
+
+@description('Tags to apply to all resources')
 param tags object
 
 @description('Name of the Log Analytics Workspace')
@@ -7,7 +10,13 @@ param logAnalyticsWorkspaceName string
 @description('Name of the Application Insights resource')
 param appInsightsName string
 
-resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
+@description('Log retention period in days for Log Analytics')
+@minValue(7)
+@maxValue(730)
+param logRetentionInDays int = 7
+
+// Log Analytics Workspace for centralized logging and monitoring
+resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: logAnalyticsWorkspaceName
   location: location
   tags: tags
@@ -35,5 +44,5 @@ output logAnalyticsWorkspaceId string = logAnalytics.id
 output logAnalyticsWorkspaceName string = logAnalytics.name
 output appInsightsResourceId string = appInsights.id
 output appInsightsName string = appInsights.name
-output appInsightsInstrumentationKey string = appInsights.properties.InstrumentationKey
+// Connection string is the preferred method for accessing Application Insights
 output appInsightsConnectionString string = appInsights.properties.ConnectionString

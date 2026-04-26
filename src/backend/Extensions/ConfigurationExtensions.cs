@@ -20,7 +20,7 @@ public static class ConfigurationExtensions
         var azureSubscriptionId = EnvironmentVariableHelper.GetConfigValue("AZURE_SUBSCRIPTION_ID", configuration);
         var azureTenantId = EnvironmentVariableHelper.GetConfigValue("AZURE_TENANT_ID", configuration);
         var textModelName = EnvironmentVariableHelper.GetConfigValue("AZURE_TEXT_MODEL_NAME", configuration, "gpt-4o");
-        var embeddingModelName = EnvironmentVariableHelper.GetConfigValue("AZURE_EMBEDDING_MODEL_NAME", configuration, "text-embedding-ada-002");
+        var embeddingModelName = EnvironmentVariableHelper.GetConfigValue("AZURE_EMBEDDING_MODEL_NAME", configuration, "text-embedding-3-small");
         var azureSearchEndpoint = EnvironmentVariableHelper.GetConfigValue("AZURE_SEARCH_SERVICE_ENDPOINT", configuration);
         var azureSearchAdminKey = EnvironmentVariableHelper.GetConfigValue("AZURE_AI_SEARCH_ADMIN_KEY", configuration);
         var otlpEndpoint = EnvironmentVariableHelper.GetConfigValue("OTEL_EXPORTER_OTLP_ENDPOINT", configuration);
@@ -29,10 +29,6 @@ public static class ConfigurationExtensions
         var applicationInsightsConnectionString = EnvironmentVariableHelper.GetConfigValue("APPLICATIONINSIGHTS_CONNECTION_STRING", configuration)
                                                   ?? configuration["ApplicationInsights:ConnectionString"];
 
-        // MCP tool configuration
-        var mcpFlightSearchToolBaseUrl = EnvironmentVariableHelper.GetConfigValue("MCP_FLIGHT_SEARCH_TOOL_BASE_URL", configuration, "http://localhost:5002");
-        var mcpFlightSearchApiKey = EnvironmentVariableHelper.GetConfigValue("MCP_FLIGHT_SEARCH_API_KEY", configuration);
-
         // Cosmos DB configuration
         var cosmosDbEndpoint = EnvironmentVariableHelper.GetConfigValue("COSMOS_DB_ENDPOINT", configuration);
         var cosmosDbConnectionString = EnvironmentVariableHelper.GetConfigValue("COSMOS_DB_CONNECTION_STRING", configuration);
@@ -40,6 +36,7 @@ public static class ConfigurationExtensions
         var cosmosDbChatHistoryContainer = EnvironmentVariableHelper.GetConfigValue("COSMOS_DB_CHAT_HISTORY_CONTAINER", configuration);
         var cosmosDbUserProfileContainer = EnvironmentVariableHelper.GetConfigValue("COSMOS_DB_USER_PROFILE_CONTAINER", configuration);
         var cosmosDbFlightsContainer = EnvironmentVariableHelper.GetConfigValue("COSMOS_DB_FLIGHTS_CONTAINER", configuration, "Flights");
+        var cosmosDbDestinationsContainer = EnvironmentVariableHelper.GetConfigValue("COSMOS_DB_DESTINATIONS_CONTAINER", configuration, "Destinations");
 
         if (string.IsNullOrWhiteSpace(azureProjectEndpoint))
         {
@@ -63,14 +60,13 @@ public static class ConfigurationExtensions
             AzureAISearchAdminKey = azureSearchAdminKey,
             OtelExporterOtlpEndpoint = otlpEndpoint,
             ApplicationInsightsConnectionString = applicationInsightsConnectionString,
-            McpFlightSearchToolBaseUrl = mcpFlightSearchToolBaseUrl,
-            McpFlightSearchApiKey = mcpFlightSearchApiKey,
             CosmosDbEndpoint = cosmosDbEndpoint,
             CosmosDbConnectionString = cosmosDbConnectionString,
             CosmosDbDatabaseName = cosmosDbDatabaseName,
             CosmosDbChatHistoryContainer = cosmosDbChatHistoryContainer,
             CosmosDbUserProfileContainer = cosmosDbUserProfileContainer,
-            CosmosDbFlightsContainer = cosmosDbFlightsContainer
+            CosmosDbFlightsContainer = cosmosDbFlightsContainer,
+            CosmosDbDestinationsContainer = cosmosDbDestinationsContainer
         };
 
         services.AddSingleton<IOptions<ContosoTravelAppConfig>>(Options.Create(config));

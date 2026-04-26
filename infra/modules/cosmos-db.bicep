@@ -22,6 +22,9 @@ param bookingsContainerName string = 'Bookings'
 @description('Cosmos DB container name for user profiles')
 param userProfileContainerName string = 'UserProfiles'
 
+@description('Cosmos DB container name for destinations')
+param destinationsContainerName string = 'Destinations'
+
 @description('Vector embedding dimensions')
 param vectorDimensions int = 3072
 
@@ -45,6 +48,9 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {
     capabilities: [
       {
         name: 'EnableNoSQLVectorSearch'
+      }
+      {
+        name: 'EnableServerless'
       }
     ]
     enableFreeTier: true
@@ -89,6 +95,7 @@ resource chatHistoryContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabase
             path: '/"_etag"/?'
           }
         ]
+        // DiskANN index for efficient approximate nearest neighbor search
         vectorIndexes: [
           {
             path: '/ContentEmbedding'
@@ -102,13 +109,10 @@ resource chatHistoryContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabase
             path: '/ContentEmbedding'
             dataType: 'float32'
             dimensions: vectorDimensions
-            distanceFunction: 'cosine'
+            distanceFunction: 'cosine' // Cosine similarity for semantic relevance
           }
         ]
       }
-    }
-    options: {
-      throughput: 400
     }
   }
 }
@@ -157,12 +161,10 @@ resource flightsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/co
         ]
       }
     }
-    options: {
-      throughput: 400
-    }
   }
 }
 
+// User profile container for storing user preferences and history
 resource userProfileContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2024-05-15' = {
   parent: database
   name: userProfileContainerName
@@ -191,8 +193,52 @@ resource userProfileContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabase
         ]
       }
     }
-    options: {
-      throughput: 400
+  }
+}
+
+resource destinationsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2024-05-15' = {
+  parent: database
+  name: destinationsContainerName
+  properties: {
+    resource: {
+      id: destinationsContainerName
+      partitionKey: {
+        paths: [
+          '/destination'
+        ]
+        kind: 'Hash'
+        version: 2
+      }
+      indexingPolicy: {
+        indexingMode: 'consistent'
+        automatic: true
+        includedPaths: [
+          {
+            path: '/*'
+          }
+        ]
+        excludedPaths: [
+          {
+            path: '/"_etag"/?'
+          }
+        ]
+        vectorIndexes: [
+          {
+            path: '/descriptionVector'
+            type: 'diskANN'
+          }
+        ]
+      }
+      vectorEmbeddingPolicy: {
+        vectorEmbeddings: [
+          {
+            path: '/descriptionVector'
+            dataType: 'float32'
+            dimensions: vectorDimensions
+            distanceFunction: 'cosine'
+          }
+        ]
+      }
     }
   }
 }
@@ -204,3 +250,4 @@ output cosmosDbConnectionString string = cosmosDbAccount.listConnectionStrings()
 output cosmosDbDatabaseName string = cosmosDbDatabaseName
 output chatHistoryContainerName string = chatHistoryContainerName
 output userProfileContainerName string = userProfileContainerName
+output destinationsContainerName string = destinationsContainerName

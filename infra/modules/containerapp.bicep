@@ -59,20 +59,16 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' e
   name: containerRegistryName
 }
 
-// Use private registry when a container registry name is provided
 var usePrivateRegistry = !empty(containerRegistryName)
 
-// Automatically set to `UserAssigned` when an `identityName` has been set
 var normalizedIdentityType = !empty(identityName) ? 'UserAssigned' : identityType
 
-// AcrPull role definition ID
 var acrPullRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
 
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
   name: containerAppsEnvironmentName
 }
 
-// Grant ACR pull access to the user-assigned identity
 resource containerRegistryAccessUser 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (usePrivateRegistry && !empty(identityName)) {
   name: guid(containerRegistry.id, userIdentity.id, acrPullRoleId)
   scope: containerRegistry

@@ -76,13 +76,8 @@ resource embeddingModelDeployment 'Microsoft.CognitiveServices/accounts/deployme
   properties: {
     model: {
       name: embeddingModelName
-      format: 'OpenAI'
+      format: embeddingModelFormat
       version: embeddingModelVersion
     }
   }
 }
-
-// output openAiServiceResourceId string = openAiService.id
-// output openAiServiceEndpoint string = openAiService.properties.endpoint
-// output openAiServiceName string = openAiService.name
-// output openAiServiceDomain string = openAiService.properties.customSubDomainName

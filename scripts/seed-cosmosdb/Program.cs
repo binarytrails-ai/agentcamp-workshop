@@ -22,11 +22,13 @@ try
     var databaseName = Environment.GetEnvironmentVariable("COSMOS_DB_DATABASE_NAME")!;
     var chatContainer = Environment.GetEnvironmentVariable("COSMOS_DB_CHAT_HISTORY_CONTAINER")!;
     var flightsContainer = Environment.GetEnvironmentVariable("COSMOS_DB_FLIGHTS_CONTAINER") ?? "Flights";
+    var destinationsContainer = Environment.GetEnvironmentVariable("COSMOS_DB_DESTINATIONS_CONTAINER") ?? "Destinations";
+    var userProfileContainer = Environment.GetEnvironmentVariable("COSMOS_DB_USER_PROFILE_CONTAINER") ?? "UserProfiles";
     var azureAIEndpoint = Environment.GetEnvironmentVariable("AZURE_AI_FOUNDRY_SERVICE_ENDPOINT")!;
     var resourceGroup = Environment.GetEnvironmentVariable("AZURE_RESOURCE_GROUP")!;
 
     var cosmosClient = CreateCosmosClient(cosmosEndpoint);
-    var embeddingModelName = Environment.GetEnvironmentVariable("AZURE_EMBEDDING_MODEL_NAME") ?? "text-embedding-ada-002";
+    var embeddingModelName = Environment.GetEnvironmentVariable("AZURE_EMBEDDING_MODEL_NAME") ?? "text-embedding-3-small";
     var azureAIKey = Environment.GetEnvironmentVariable("AZURE_AI_SERVICES_KEY");
 
     AzureOpenAIClient azureOpenAIClient;
@@ -40,7 +42,8 @@ try
 
     await SeedChatHistoryAsync(cosmosClient, databaseName, chatContainer, embeddingClient, rootDir);
 
-    await SeedFlightsAsync(cosmosClient, databaseName, flightsContainer, embeddingClient, rootDir);
+    await SeedDestinationsAsync(cosmosClient, databaseName, destinationsContainer, embeddingClient, rootDir);
+
 
     Console.WriteLine("\n=== Seeding Complete ===");
     return 0;
@@ -101,11 +104,11 @@ async Task SeedChatHistoryAsync(
     Console.WriteLine("--- Seeding Chat History ---");
 
     var container = cosmosClient.GetContainer(databaseName, containerName);
-    var chatHistoryPath = Path.Combine(rootDir, "data", "chat_history.json");
+    var chatHistoryPath = Path.Combine(rootDir, "data", "chat-history.json");
 
     if (!File.Exists(chatHistoryPath))
     {
-        Console.WriteLine($"  SKIPPED: chat_history.json not found at {chatHistoryPath}\n");
+        Console.WriteLine($"  SKIPPED: chat-history.json not found at {chatHistoryPath}\n");
         return;
     }
 
@@ -163,57 +166,60 @@ async Task SeedChatHistoryAsync(
     Console.WriteLine($"  Summary: {inserted} inserted, {existing} already existed\n");
 }
 
-async Task SeedFlightsAsync(
+async Task SeedDestinationsAsync(
     CosmosClient cosmosClient,
     string databaseName,
     string containerName,
     EmbeddingClient embeddingClient,
     string rootDir)
 {
-    Console.WriteLine("--- Seeding Flights Data ---");
+    Console.WriteLine("--- Seeding Travel Destinations ---");
 
     var container = cosmosClient.GetContainer(databaseName, containerName);
-    var flightsPath = Path.Combine(rootDir, "data", "flights_data.json");
+    var destinationsPath = Path.Combine(rootDir, "data", "travel-destinations.json");
 
-    if (!File.Exists(flightsPath))
+    if (!File.Exists(destinationsPath))
     {
-        Console.WriteLine($"  SKIPPED: flights_data.json not found at {flightsPath}\n");
+        Console.WriteLine($"  SKIPPED: travel-destinations.json not found at {destinationsPath}\n");
         return;
     }
 
-    var flightsJson = await File.ReadAllTextAsync(flightsPath);
-    var flights = JArray.Parse(flightsJson);
+    var destinationsJson = await File.ReadAllTextAsync(destinationsPath);
+    var destinations = JArray.Parse(destinationsJson);
 
-    Console.WriteLine($"  Loaded {flights.Count} flight records");
+    Console.WriteLine($"  Loaded {destinations.Count} destination records");
 
     var inserted = 0;
     var existing = 0;
     var vectorized = 0;
 
-    foreach (JObject flight in flights)
+    foreach (JObject destination in destinations)
     {
-        // Generate vector embedding for flightProfile if it exists
-        if (flight["flightProfile"] != null)
+        // Add type field for consistent querying
+        destination["type"] = "destination";
+
+        // Generate vector embedding for description field
+        if (destination["description"] != null)
         {
-            var flightProfile = flight["flightProfile"]!.ToString();
+            var description = destination["description"]!.ToString();
             
             // Add delay to avoid rate limiting
             await Task.Delay(200);
-            var embeddingResponse = await embeddingClient.GenerateEmbeddingAsync(flightProfile);
+            var embeddingResponse = await embeddingClient.GenerateEmbeddingAsync(description);
             var embedding = embeddingResponse.Value.ToFloats().ToArray();
 
-            flight["flightProfileVector"] = new JArray(embedding);
+            destination["descriptionVector"] = new JArray(embedding);
             vectorized++;
         }
 
         try
         {
-            await container.CreateItemAsync(flight, new PartitionKey(flight["id"]!.ToString()));
+            await container.CreateItemAsync(destination, new PartitionKey(destination["destination"]!.ToString()));
             inserted++;
 
             if (inserted % 5 == 0)
             {
-                Console.WriteLine($"  Progress: {inserted}/{flights.Count} inserted...");
+                Console.WriteLine($"  Progress: {inserted}/{destinations.Count} inserted...");
             }
             
             // Small delay between writes to avoid throttling
@@ -227,6 +233,7 @@ async Task SeedFlightsAsync(
 
     Console.WriteLine($"  Summary: {inserted} inserted, {existing} already existed, {vectorized} vectorized\n");
 }
+
 
 string GetRootDirectory()
 {

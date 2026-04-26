@@ -1,0 +1,218 @@
+[
+  {
+    "id": "great-ocean-road",
+    "destination": "Great Ocean Road",
+    "location": "Victoria",
+    "country": "Australia",
+    "category": "Adventure/Outdoors",
+    "description": "One of the world's most scenic coastal drives, stretching 243km along Victoria's southwest coast. Features the iconic Twelve Apostles limestone formations, dramatic coastal cliffs, pristine beaches, and lush rainforest trails through the Otways. Perfect for road trippers seeking stunning ocean views, wildlife encounters with koalas, and outdoor adventures including surfing at Bells Beach and hiking through ancient forests.",
+    "experiences": ["adventure", "outdoors", "scenic drives", "hiking"]
+  },
+  {
+    "id": "blue-mountains",
+    "destination": "Blue Mountains",
+    "location": "NSW",
+    "country": "Australia",
+    "category": "Adventure/Outdoors",
+    "description": "UNESCO World Heritage wilderness area just 90 minutes from Sydney, featuring dramatic sandstone cliffs, eucalyptus forests, and the famous Three Sisters rock formation. Offers over 140km of hiking trails ranging from easy walks to challenging multi-day treks, scenic railway rides, and stunning lookout points. Charming mountain villages like Katoomba and Leura provide cozy accommodation, cafes, and galleries. Ideal for day trips or weekend escapes into pristine Australian bushland.",
+    "experiences": ["adventure", "outdoors", "hiking", "nature", "unesco"]
+  },
+  {
+    "id": "kakadu-national-park",
+    "destination": "Kakadu National Park",
+    "location": "NT",
+    "country": "Australia",
+    "category": "Adventure/Outdoors",
+    "description": "Australia's largest national park covering 20,000 square kilometers in the Northern Territory's tropical north. Contains ancient Aboriginal rock art sites dating back over 20,000 years, dramatic escarpments, monsoon rainforests, and diverse wildlife including crocodiles and over 280 bird species. Experience spectacular wetlands at Yellow Water Billabong, swim at Jim Jim Falls, and learn about continuous Indigenous culture spanning 65,000 years through guided tours with traditional owners.",
+    "experiences": ["adventure", "outdoors", "culture", "indigenous", "nature"]
+  },
+  {
+    "id": "tasmania-wilderness",
+    "destination": "Tasmania Wilderness",
+    "location": "Tasmania",
+    "country": "Australia",
+    "category": "Adventure/Outdoors",
+    "description": "Pristine wilderness encompassing Cradle Mountain-Lake St Clair National Park and the world-famous 65km Overland Track, one of Australia's premier multi-day hikes. Features alpine plateaus, ancient rainforests, glacial lakes, and unique wildlife including Tasmanian devils and wombats. The rugged landscape offers dramatically changing weather, creating mystical mountain scenery perfect for serious hikers and nature photographers. Half of Tasmania is protected wilderness, providing unparalleled opportunities for remote backcountry exploration.",
+    "experiences": ["adventure", "outdoors", "hiking", "wilderness"]
+  },
+  {
+    "id": "queenstown",
+    "destination": "Queenstown",
+    "location": "South Island",
+    "country": "New Zealand",
+    "category": "Adventure/Outdoors",
+    "description": "New Zealand's adventure capital on the shores of Lake Wakatipu, surrounded by dramatic Southern Alps peaks. Birthplace of commercial bungee jumping and offering year-round adrenaline activities including jet boating, skydiving, canyon swinging, and mountain biking. World-class skiing at Coronet Peak and The Remarkables in winter. Gateway to Milford Sound and nearby Arrowtown's gold rush heritage. Vibrant dining scene, luxury accommodations, and stunning scenery make it perfect for both thrill-seekers and scenic relaxation.",
+    "experiences": ["adventure", "outdoors", "bungee", "skiing", "hiking"]
+  },
+  {
+    "id": "great-barrier-reef",
+    "destination": "Great Barrier Reef",
+    "location": "Queensland",
+    "country": "Australia",
+    "category": "Beaches/Coastal",
+    "description": "The world's largest coral reef system stretching over 2,300km along the Queensland coast, visible from space and home to over 1,500 fish species, 400 coral types, and countless marine creatures including sea turtles, reef sharks, and dolphins. UNESCO World Heritage Site offering unparalleled snorkeling and diving experiences. Access from multiple gateways including Cairns, Port Douglas, and the Whitsunday Islands. Experience pristine tropical islands, luxury resorts, liveaboard diving adventures, and once-in-a-lifetime encounters with migrating humpback whales.",
+    "experiences": ["beach", "snorkeling", "diving", "tropical", "marine life", "unesco"]
+  },
+  {
+    "id": "sunshine-coast",
+    "destination": "Sunshine Coast",
+    "location": "Queensland",
+    "country": "Australia",
+    "category": "Beaches/Coastal",
+    "description": "Laid-back coastal region north of Brisbane offering pristine beaches, world-class surf breaks, and lush hinterland rainforests. Features charming seaside towns like Noosa with its national park coastal walks, trendy Mooloolaba, and family-friendly Caloundra. The hinterland provides a cool mountain escape with Maleny and Montville's artisan shops, wineries, and forest walks. Australia Zoo and the Eumundi Markets add cultural attractions. Perfect balance of beach relaxation, outdoor activities, and gourmet food experiences without the crowds of the Gold Coast.",
+    "experiences": ["beach", "relaxation", "rainforest", "coastal"]
+  },
+  {
+    "id": "byron-bay",
+    "destination": "Byron Bay",
+    "location": "NSW",
+    "country": "Australia",
+    "category": "Beaches/Coastal",
+    "description": "Australia's easternmost point and iconic bohemian beach town known for consistent surf breaks, yoga retreats, and alternative wellness culture. Features stunning beaches like Wategos and The Pass, the historic Cape Byron lighthouse with whale watching opportunities (June-November), and a vibrant community of artists, musicians, and organic farmers. Explore the bustling town center with eclectic boutiques, farm-to-table restaurants, and weekend markets. Nearby hinterland offers waterfalls, rainforest walks, and the creative village of Bangalow. Perfect blend of surf, spirituality, and sustainable living.",
+    "experiences": ["beach", "surfing", "wellness", "coastal", "yoga"]
+  },
+  {
+    "id": "margaret-river",
+    "destination": "Margaret River",
+    "location": "Western Australia",
+    "country": "Australia",
+    "category": "Beaches/Coastal",
+    "description": "Premium wine region 3 hours south of Perth, combining spectacular coastline with world-class wineries and gourmet food producers. Home to over 150 wineries producing exceptional Cabernet Sauvignon and Chardonnay, alongside craft breweries, artisan cheese makers, and chocolate factories. Pristine beaches offer excellent surfing and dramatic coastal scenery including limestone caves at Lake Cave and Jewel Cave. The region features towering karri forests, boutique accommodations, and acclaimed restaurants showcasing local produce. Perfect destination for wine lovers, foodies, and coastal enthusiasts.",
+    "experiences": ["beach", "coastal", "wine", "food", "scenic"]
+  },
+  {
+    "id": "coromandel-peninsula",
+    "destination": "Coromandel Peninsula",
+    "location": "North Island",
+    "country": "New Zealand",
+    "category": "Beaches/Coastal",
+    "description": "Rugged coastal paradise 2 hours from Auckland featuring white sand beaches, native pohutukawa forests, and geothermal hot springs. Famous for Cathedral Cove's natural rock archway, accessible by kayak or coastal walk, and Hot Water Beach where you can dig your own thermal spa pool at low tide. The peninsula offers excellent fishing, boating, and tramping through kauri forests. Charming towns like Whitianga and Coromandel provide art galleries, cafes, and local crafts. Ideal for a peaceful beach holiday combined with outdoor exploration and natural wonders.",
+    "experiences": ["beach", "coastal", "nature", "relaxation"]
+  },
+  {
+    "id": "kangaroo-island",
+    "destination": "Kangaroo Island",
+    "location": "South Australia",
+    "country": "Australia",
+    "category": "Wildlife",
+    "description": "Australia's third-largest island, located off the South Australian coast and renowned as a wildlife sanctuary with over one-third of the island protected as national and conservation parks. Encounter kangaroos, koalas, sea lions, and fur seals in their natural habitats. Highlights include Seal Bay Conservation Park with its Australian sea lion colony, Flinders Chase National Park featuring the iconic Remarkable Rocks and Admirals Arch, and pristine beaches. Local producers offer honey, wine, spirits, and fresh seafood. A paradise for nature photographers and wildlife enthusiasts seeking authentic Australian encounters.",
+    "experiences": ["wildlife", "nature", "kangaroos", "seals", "sanctuary"]
+  },
+  {
+    "id": "phillip-island",
+    "destination": "Phillip Island",
+    "location": "Victoria",
+    "country": "Australia",
+    "category": "Wildlife",
+    "description": "Popular island destination 90 minutes from Melbourne, famous for the nightly Penguin Parade where hundreds of little penguins waddle ashore at sunset. Home to Australia's largest fur seal colony at Seal Rocks, koala conservation centers, and diverse birdlife. Features stunning coastal scenery with rugged cliffs at The Nobbies, excellent surf beaches at Woolamai, and the iconic Grand Prix motorcycle racing circuit. Family-friendly attractions include wildlife parks, the Antarctic Journey experience, and chocolate factory. Perfect for a day trip or weekend getaway combining wildlife encounters with coastal beauty.",
+    "experiences": ["wildlife", "penguins", "coastal", "nature", "family-friendly"]
+  },
+  {
+    "id": "ningaloo-reef",
+    "destination": "Ningaloo Reef",
+    "location": "Western Australia",
+    "country": "Australia",
+    "category": "Wildlife",
+    "description": "UNESCO World Heritage reef system stretching 260km along Western Australia's remote northwest coast, offering the rare opportunity to swim with whale sharks (March-July), the world's largest fish. Accessible directly from the beach unlike the Great Barrier Reef, with pristine coral gardens teeming with over 500 fish species, manta rays, turtles, dolphins, and humpback whales. Based in Exmouth or Coral Bay, experience untouched beaches, turquoise waters, and spectacular marine encounters in one of the planet's most pristine reef ecosystems. Perfect for snorkelers and divers seeking uncrowded, authentic reef experiences.",
+    "experiences": ["wildlife", "marine life", "whale sharks", "snorkeling", "diving"]
+  },
+  {
+    "id": "rottnest-island",
+    "destination": "Rottnest Island",
+    "location": "Western Australia",
+    "country": "Australia",
+    "category": "Wildlife",
+    "description": "Car-free island paradise 19km off Perth's coast, famous as home to the quokka, a small marsupial often called the world's happiest animal. Crystal-clear waters and stunning beaches at spots like The Basin and Salmon Bay offer excellent snorkeling with tropical fish, coral, and occasional dolphins. Over 60 beaches and 20 bays provide endless coastal exploration by bicycle, the island's primary transport. Rich maritime history includes shipwrecks, historic buildings, and World War II sites. Day trips from Perth or overnight stays in unique accommodations allow time to cycle the 24km perimeter and capture that perfect quokka selfie.",
+    "experiences": ["wildlife", "quokkas", "beach", "snorkeling", "island"]
+  },
+  {
+    "id": "kaikoura",
+    "destination": "Kaikoura",
+    "location": "South Island",
+    "country": "New Zealand",
+    "category": "Wildlife",
+    "description": "Spectacular coastal town on New Zealand's South Island where the Seaward Kaikoura Range meets the Pacific Ocean, creating unique conditions that attract abundant marine life. Year-round whale watching opportunities to see sperm whales, with seasonal visits from humpback, pilot, and southern right whales. Encounter playful dusky dolphins, New Zealand fur seals at nearby colonies, and diverse seabirds including albatross. The Kaikoura Peninsula Walkway offers stunning coastal views and seal watching. Famous for fresh crayfish (lobster), mountain scenery, and the Kaikoura Earthquake Trail documenting the area's geological activity. Ultimate destination for marine wildlife enthusiasts.",
+    "experiences": ["wildlife", "whales", "seals", "marine life", "coastal"]
+  },
+  {
+    "id": "melbourne",
+    "destination": "Melbourne",
+    "location": "Victoria",
+    "country": "Australia",
+    "category": "Cultural/Urban",
+    "description": "Australia's cultural capital and consistently ranked among the world's most liveable cities, renowned for exceptional coffee culture, hidden laneway bars, and vibrant street art. Home to world-class museums including the National Gallery of Victoria and ACMI, prestigious sporting events like the Australian Open and Melbourne Cup, and diverse neighborhoods from beachside St Kilda to trendy Fitzroy. Explore the famous Queen Victoria Market, dine in award-winning restaurants, catch live music at intimate venues, and discover contemporary art galleries. Four distinct seasons bring changing personality, from summer beach days to cozy winter cafe culture.",
+    "experiences": ["culture", "urban", "arts", "coffee", "food", "museums"]
+  },
+  {
+    "id": "sydney",
+    "destination": "Sydney",
+    "location": "NSW",
+    "country": "Australia",
+    "category": "Cultural/Urban",
+    "description": "Australia's largest and most iconic city, famous for the stunning Sydney Opera House and Harbour Bridge set against one of the world's most beautiful natural harbors. Combines urban sophistication with beach culture at world-renowned Bondi, Manly, and Coogee beaches. Explore diverse neighborhoods from historic Rocks precinct to trendy Surry Hills, multicultural Chinatown, and harborside Circular Quay. Offers world-class dining, shopping, museums, galleries, and the Royal Botanic Garden. Take harbor cruises, climb the Bridge, enjoy coastal walks, or ferry to Taronga Zoo. Perfect blend of outdoor lifestyle, cultural attractions, and cosmopolitan energy.",
+    "experiences": ["culture", "urban", "harbor", "beach", "iconic landmarks"]
+  },
+  {
+    "id": "hobart",
+    "destination": "Hobart",
+    "location": "Tasmania",
+    "country": "Australia",
+    "category": "Cultural/Urban",
+    "description": "Tasmania's charming capital city combining Georgian architecture, contemporary art, and exceptional food and wine culture. Home to MONA (Museum of Old and New Art), Australia's largest privately-owned museum featuring provocative contemporary art in a stunning waterfront setting. Historic Salamanca Place offers weekend markets, galleries, and sandstone warehouses converted to restaurants and shops. Mount Wellington provides panoramic city views, while the harbor hosts wooden boats and fresh seafood at Constitution Dock. Explore nearby vineyards in Coal River Valley, visit historic Port Arthur, and experience the famous Dark MOFO winter festival. Cool climate, warm hospitality.",
+    "experiences": ["culture", "urban", "heritage", "art", "food", "museums"]
+  },
+  {
+    "id": "auckland",
+    "destination": "Auckland",
+    "location": "North Island",
+    "country": "New Zealand",
+    "category": "Cultural/Urban",
+    "description": "New Zealand's largest and most diverse city, built on and around an extinct volcanic field with two harbors. Known as the City of Sails for its maritime culture and yacht racing heritage. Features strong Polynesian influences, particularly Maori and Pacific Islander cultures, alongside modern urban amenities. Explore the Sky Tower, Auckland War Memorial Museum, vibrant Viaduct Harbour, and nearby wine regions on Waiheke Island. Black sand beaches at Piha and Karekare offer dramatic coastal scenery. Gateway to Bay of Islands and Northland. Perfect blend of urban sophistication, cultural diversity, and accessible natural beauty.",
+    "experiences": ["culture", "urban", "polynesian", "diverse", "harbor"]
+  },
+  {
+    "id": "wellington",
+    "destination": "Wellington",
+    "location": "North Island",
+    "country": "New Zealand",
+    "category": "Cultural/Urban",
+    "description": "New Zealand's creative capital and coolest little capital, nestled between harbor and hills with a thriving arts scene, craft beer culture, and exceptional coffee. Home to Te Papa Tongarewa, the innovative national museum, and the center of New Zealand's film industry including Weta Workshop. Explore Cuba Street's bohemian cafes and boutiques, ride the historic cable car, and discover hidden bars in the compact, walkable city center. Known for unpredictable windy weather that adds character. Gateway to Marlborough wine region via scenic ferry. Perfect for culture vultures, foodies, and creative spirits seeking authentic urban experiences.",
+    "experiences": ["culture", "urban", "creative", "museums", "food", "arts"]
+  },
+  {
+    "id": "gold-coast",
+    "destination": "Gold Coast",
+    "location": "Queensland",
+    "country": "Australia",
+    "category": "Family",
+    "description": "Australia's premier family holiday destination on Queensland's southeast coast, famous for 70km of pristine beaches and four major theme parks: Dreamworld, Sea World, Warner Bros. Movie World, and Wet'n'Wild. Surfers Paradise offers iconic high-rise skyline, shopping, and nightlife, while quieter areas like Burleigh Heads and Coolangatta provide relaxed beach culture. Hinterland rainforests offer hiking and waterfall experiences. Excellent surf breaks, world-class restaurants, canal-side mansions, and year-round sunshine make it perfect for families seeking beach fun combined with entertainment and attractions. Easy access from Brisbane airport.",
+    "experiences": ["family", "theme parks", "beach", "entertainment", "kids"]
+  },
+  {
+    "id": "port-douglas",
+    "destination": "Port Douglas",
+    "location": "Queensland",
+    "country": "Australia",
+    "category": "Family",
+    "description": "Tropical resort town in Far North Queensland, offering perfect access to both the Great Barrier Reef and Daintree Rainforest, two UNESCO World Heritage Sites. Family-friendly resorts line the palm-fringed Four Mile Beach, while Macrossan Street provides boutique shopping and diverse dining. Take reef tours with kid-friendly operators, explore the ancient Daintree with wildlife spotting, visit Wildlife Habitat sanctuary, or enjoy the Sunday Port Douglas Markets. More relaxed and upscale than Cairns, with excellent family accommodations and activities for all ages. Ideal tropical family getaway combining reef adventures, rainforest exploration, and beach relaxation.",
+    "experiences": ["family", "beach", "reef", "resorts", "tropical"]
+  },
+  {
+    "id": "canberra",
+    "destination": "Canberra",
+    "location": "ACT",
+    "country": "Australia",
+    "category": "Family",
+    "description": "Australia's purpose-built capital city offering exceptional free national museums and galleries perfect for educational family trips. Highlights include the Australian War Memorial, National Museum of Australia, Questacon science center, National Gallery, and Parliament House tours. Lake Burley Griffin provides cycling, paddling, and picnic opportunities. Tidbinbilla Nature Reserve and National Zoo & Aquarium offer wildlife encounters. Seasonal attractions include Floriade flower festival (spring) and Christmas lights at Nara Peace Park. Well-planned city with excellent parks, playgrounds, and family-friendly restaurants. Ideal destination combining education, culture, and outdoor activities in a safe, accessible environment.",
+    "experiences": ["family", "educational", "museums", "outdoors", "culture"]
+  },
+  {
+    "id": "bay-of-islands",
+    "destination": "Bay of Islands",
+    "location": "North Island",
+    "country": "New Zealand",
+    "category": "Family",
+    "description": "Stunning subtropical region in Northland featuring 144 islands, secluded bays, and crystal-clear waters perfect for family water activities. Based in Paihia or Russell, families can enjoy dolphin watching and swimming with wild dolphins, island cruising, kayaking, and fishing. Visit the historic Waitangi Treaty Grounds to learn New Zealand's founding story, explore charming Russell township with heritage buildings, or take the car ferry for adventure. Safe, calm beaches ideal for young swimmers, with excellent family accommodations and kid-friendly boat tours. 3 hours from Auckland, offering perfect blend of maritime adventure, history, and beach fun.",
+    "experiences": ["family", "beach", "dolphins", "islands", "water activities"]
+  }
+]

@@ -7,9 +7,6 @@
     },
     "location": {
       "value": "${AZURE_LOCATION}"
-    },
-    "mcpFlightSearchApiKey": {
-      "value": "F3FF9AB9-AF9E-42CA-916F-23BEFE7AA546"
     }
   }
 }

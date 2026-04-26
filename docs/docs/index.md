@@ -2,101 +2,85 @@
 
 ![aigenius](media/cover.png)
 
-## Session Information
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?logo=github&style=for-the-badge)](https://github.com/binarytrails-ai/agentcamp-workshop)
 
-The real power of an AI agent isn’t in the model. It’s in how well it manages context.
+---
 
-Large language models are inherently stateless. Without carefully designed memory and context strategies, agents lose track of goals, and struggle with long-running tasks.
+## Session Overview
 
-In this practical workshop, we explore why context is the foundation of intelligent agent behavior — and how to design it intentionally.
+The real power of an AI agent isn't in the model. It's in how well it manages context.
 
-We’ll explore the core memory types that shape agent behavior:
+Large language models are inherently stateless. Without carefully designed memory and context strategies, agents lose track of goals, struggle with long-running tasks, and produce generic, non-personalized responses.
 
-Short-term memory – working context for current reasoning loops
-Long-term memory – persistent knowledge across sessions
-Episodic memory – past interactions and task history
-Semantic memory – structured knowledge about users or domains
+In this hands-on workshop, we explore why context is the foundation of intelligent agent behavior — and how to design it intentionally.
 
-Through progressive examples, we’ll evolve a simple stateless agent into a memory-driven system that maintains goal continuity, adapts over time, and produces more consistent decisions.
+### What You'll Learn
 
-This session is not about adding complexity — it’s about designing stronger foundations.
+We'll explore the core memory types that shape agent behavior:
+
+- **Short-term memory** — working context for current reasoning loops
+- **Episodic memory** — past interactions and task history
+- **Semantic memory** — structured knowledge about concepts and relationships
+- **Long-term memory** — persistent user data across sessions
+
+Through progressive labs, we'll evolve a simple stateless agent into a memory-driven system that maintains goal continuity, adapts over time, and produces more consistent, personalized decisions.
+
+This session is not about adding complexity — it's about designing stronger foundations.
 
 By the end, you will walk away with:
 
-✅ A clear understanding of different memory types and when to use each
-✅ Practical patterns for structuring, storing, and retrieving memory effectively
-✅ Architectural strategies for handling context window limits
-✅ A reference implementation approach you can apply to your own agent builds
-
-This session is designed for practitioners who have some experience working with AI models and basic programming knowledge.
+- A clear understanding of different memory types and when to use each
+- Practical patterns for structuring, storing, and retrieving memory effectively
+- Architectural strategies for handling context window limits
+- A reference implementation approach you can apply to your own agent builds
 
 ---
 
-## Application Overview
+## Prerequisites
 
-This repository provides a reference implementation of an AI-powered travel assistant built with the Microsoft Agent Framework. It demonstrates the following key capabilities:
+This session is designed for practitioners who have:
 
-!!! tip "New to the Microsoft Agent Framework?"
-    Start with the foundation labs in [labs/00-foundations](https://github.com/binarytrails-ai/agentcamp-workshop/tree/main/labs/00-foundations).
-    
-    These standalone examples introduce core concepts of Microsoft Agent Framework in a simplified context.
+- Some experience working with AI models (OpenAI, Azure OpenAI, etc.)
+- Basic programming knowledge (C# or similar languages)
+- Familiarity with REST APIs and web applications
+- Curiosity about AI agent architecture and memory systems
 
 ---
 
-## Architecture
+## What You'll Build
+
+This repository provides a reference implementation of an AI-powered travel assistant built with the Microsoft Agent Framework. Using this as a running example, you'll learn how to design and implement different memory types to create a more intelligent, and context-aware agent.
+
+This workshop consists of the following labs introducing different memory types and capabilities to the travel assistant:
+
+1. [Lab 1: Personalization using Long-Term Memory](./01-lab-long-term-memory.md) (~20 minutes)
+2. [Lab 2: Conversation Recall with Episodic Memory](./02-lab-episodic-memory.md) (~20 minutes)
+3. [Lab 3: Knowledge Retrieval with Semantic Memory](./03-lab-semantic-memory.md) (~20 minutes)
+
+---
+
+## Architecture Overview
+
+This reference implementation demonstrates a production-ready AI travel assistant with a modern, cloud-native architecture designed to support multiple memory types:
 
 ![Architecture Diagram](media/architecture.png)
 
-### Key Components
+### Components
 
-- **Frontend (Container App)** - User interface built with CopilotKit to interact with the travel assistant agent.
-- **Backend API (Container App)** - .NET 10 Asp.NET Core API that hosts the Travel Assistant agent. The API publishes the agent via the AG-UI protocol for frontend integration and manages agent execution, state, and tool interactions.
-- **Cosmos DB** - Azure Cosmos DB instance for storing user preferences, and other application data.
-- **Azure AI Foundry** - Provides access to Azure OpenAI models.
-- **Observability** - OpenTelemetry for distributed tracing and Azure Monitor for centralized logging and monitoring of agent interactions.
-
----
-
-## Let's Get Started
-
-Head over to the [Environment Setup](./00-setup_instructions.md) page for instructions on setting up your development environment and running the travel assistant application. Once you have the application up and running, you can explore the following scenarios:
-
-### Personalization with User Preferences
-
-This scenario demonstrates how the agent stores and retrieves user preferences to provide personalized travel recommendations.
-
-**Step 1: Initial Conversation - Building Profile**
-
-Start the conversation with:
-
-```
-Can you help me plan a trip?
-```
-
-*Expected Response:* Agent greets you and asks about your travel preferences (e.g., budget, travel style, interests).
-
-**Step 2: Answer the Agent's Questions**
-
-Respond to the agent's questions to build your profile. For example:
-
-```
-I want to plan a trip with a budget of around $2,000. I love hiking and outdoor activities.
-```
-
-*Expected Response:* Agent provides personalized destination recommendations and stores your profile information (travel style, budget, interests, past trips, places to visit).
-
-**Step 3: Test Profile Memory**
-
-Start a new conversation by clicking on **New Chat** in the frontend UI, then ask:
-
-```
-I want to plan my next vacation
-```
-
-*Expected Response:* Agent references your stored profile and provides personalized recommendations based on your preferences.
+- **Frontend (Container App)** - Interactive user interface built with CopilotKit for seamless agent conversations and real-time interactions
+- **Backend API (Container App)** - .NET 10 ASP.NET Core API that hosts the Travel Assistant agent, publishes via AG-UI protocol, and manages execution, state, and tool interactions
+- **Cosmos DB** - Azure Cosmos DB for all application data storage
+- **Azure AI Foundry** - Provides access to Azure OpenAI models for natural language understanding and generation
+- **Observability** - OpenTelemetry for distributed tracing and Azure Monitor for centralized logging and monitoring of agent interactions
 
 ---
 
-## Additional Resources
+## Getting Started
 
-Refer to the [Learning Resources](./resources.md) page for more resources on Microsoft Agent Framework, code samples, and related technologies.
+Follow the instructions on the **[Environment Setup Guide](./00-setup_instructions.md)** to set up your development environment.
+
+When you're ready, move on to [Lab 1: Personalization using Long-Term Memory](./01-lab-long-term-memory.md) to begin building your memory-driven agent.
+
+Happy coding!
+
+---

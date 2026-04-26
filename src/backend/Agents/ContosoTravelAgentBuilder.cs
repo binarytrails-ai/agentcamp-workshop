@@ -1,105 +1,138 @@
-﻿#pragma warning disable MAAI001 // FileAgentSkillsProvider is experimental
-
-using ContosoTravelAgent.Host.Models;
+﻿using ContosoTravelAgent.Host.Models;
 using ContosoTravelAgent.Host.Services;
 using ContosoTravelAgent.Host.Tools;
 using Microsoft.Agents.AI;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.AI;
-using ModelContextProtocol.Client;
 using OpenAI.Embeddings;
-using System.Text.Json;
 
 namespace ContosoTravelAgent.Host.Agents;
 
 public class ContosoTravelAgentBuilder
 {
     private readonly IChatClient _chatClient;
-    private readonly EmbeddingClient _embeddingClient;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly JsonSerializerOptions _jsonSerializerOptions;
     private readonly Database? _cosmosDatabase;
     private readonly ILoggerFactory _loggerFactory;
-    private readonly McpClient _mcpClient;
     private readonly ContosoTravelAppConfig _config;
+    private readonly EmbeddingClient _embeddingClient;
+    private readonly DestinationSearchTool _destinationSearchTool;
+    private readonly ChatHistorySearchTool _chatHistorySearchTool;
 
     /// <summary>
     /// Initializes a new instance of the ContosoTravelAgentFactory class.
     /// </summary>
     /// <param name="chatClient">Chat client for LLM interactions.</param>
-    /// <param name="embeddingClient">Embedding client for vector operations.</param>
     /// <param name="httpContextAccessor">HTTP context accessor.</param>
-    /// <param name="jsonSerializerOptions">JSON serialization options.</param>
     /// <param name="loggerFactory">Logger factory.</param>
-    /// <param name="sp">Service provider for resolving dependencies.</param>
     /// <param name="config">Application configuration.</param>
     /// <param name="cosmosDatabase">Cosmos DB database instance (optional).</param>
+    /// <param name="embeddingClient">Embedding client for vector search.</param>
     public ContosoTravelAgentBuilder(
         IChatClient chatClient,
-        EmbeddingClient embeddingClient,
         IHttpContextAccessor httpContextAccessor,
-        JsonSerializerOptions jsonSerializerOptions,
         ILoggerFactory loggerFactory,
-        IServiceProvider sp,
         ContosoTravelAppConfig config,
-        Database? cosmosDatabase = null)
+        Database? cosmosDatabase = null,
+        EmbeddingClient? embeddingClient = null)
     {
         _chatClient = chatClient;
-        _embeddingClient = embeddingClient;
         _httpContextAccessor = httpContextAccessor;
-        _jsonSerializerOptions = jsonSerializerOptions;
         _cosmosDatabase = cosmosDatabase;
         _loggerFactory = loggerFactory;
-        _mcpClient = sp.GetRequiredKeyedService<McpClient>("mcp-contoso-travel");
         _config = config;
+        _embeddingClient = embeddingClient!;
+        _destinationSearchTool = new DestinationSearchTool(
+            cosmosDatabase!,
+            config.CosmosDbDestinationsContainer ?? "Destinations",
+            loggerFactory.CreateLogger<DestinationSearchTool>(),
+            embeddingClient!);
+        _chatHistorySearchTool = new ChatHistorySearchTool(
+            cosmosDatabase!,
+            config.CosmosDbChatHistoryContainer ?? "ChatHistory",
+            loggerFactory.CreateLogger<ChatHistorySearchTool>(),
+            embeddingClient!,
+            chatClient);
     }
 
     private const string AgentInstructions = """
     You are Contoso Travel Assistant, an intelligent assistant for Contoso Travel Agency.
-    Introduce yourself as "Contoso Travel Assistant" and help travelers with all their travel needs!
+    Help travelers discover amazing destinations in Australia and New Zealand!
 
-    # ROLE
-    - Help travelers discover destinations and plan trips
-    - Provide travel advice on destinations, visas, timing, and costs
-    - Load relevant skills when a request aligns with an available skill's domain - skills provide specialized guidance for handling specific travel tasks
-    - Be friendly, enthusiastic, conversational, and knowledgeable about travel
+    # YOUR ROLE
+    - Recommend travel destinations based on user preferences and interests
+    - Be friendly, enthusiastic, and conversational
+    - Ask questions to understand what travelers are looking for
+    - Paint vivid pictures of destinations to inspire exploration
 
-    ## CONVERSATION STYLE
-    - Have natural, flowing conversations - don't interrogate or rush through questions
-    - Ask follow-up questions to understand preferences better (no more than TWO at a time)
-    - Show genuine enthusiasm about helping travelers explore
-    - Be concise for simple queries, detailed when planning requires it
-    - Paint vivid pictures of destinations to inspire travelers
+    ## USER PROFILE AWARENESS
+    - When a user profile is available (injected via context), naturally incorporate their preferences into recommendations
+    - Consider their travel style, budget range, interests, dietary requirements, and past destinations
+    - Reference profile preferences conversationally - don't just list them mechanically
+    - Example: Instead of "Your profile says you like hiking", say "Since you enjoy hiking, you'll love..."
+    - If no profile is available, provide general recommendations and gather preferences through conversation
 
     ## RESPONSE GUIDELINES
-    - Provide practical, actionable travel advice
-    - Explain pros/cons and trade-offs when presenting options
-    - Include timing, budget, and logistics considerations
-    - Close naturally without forcing next steps on informational queries
+    - Be concise and engaging
+    - Focus on matching destinations to traveler preferences
+    - If using a profile, highlight how destinations align with their interests, budget, and travel style
+    - If no profile exists, learn about their preferences through natural conversation
+
+    ## DESTINATION HIGHLIGHTS:
+
+    ### Adventure/Outdoors
+    | Destination | Location | Description |
+    |-------------|----------|-------------|
+    | Great Ocean Road | Victoria | Dramatic coastal cliffs and rainforest trails |
+    | Blue Mountains | NSW | World Heritage wilderness and hiking |
+    | Kakadu National Park | NT | Ancient landscapes and Indigenous culture |
+    | Tasmania Wilderness | Tasmania | Cradle Mountain, Overland Track |
+    | Queenstown | New Zealand | Adventure capital with bungee, hiking, skiing |
+
+    ### Beaches/Coastal
+    | Destination | Location | Description |
+    |-------------|----------|-------------|
+    | Great Barrier Reef | Queensland | Vibrant coral reefs and tropical islands |
+    | Sunshine Coast | Queensland | Relaxed beaches and hinterland rainforests |
+    | Byron Bay | NSW | Iconic surf town with wellness culture |
+    | Margaret River | Western Australia | Stunning coastline with wine country |
+    | Coromandel Peninsula | New Zealand | White sand beaches and native bush |
+
+    ### Wildlife
+    | Destination | Location | Description |
+    |-------------|----------|-------------|
+    | Kangaroo Island | South Australia | Wildlife sanctuary experiences |
+    | Phillip Island | Victoria | Penguin parades and coastal nature |
+    | Ningaloo Reef | Western Australia | Whale sharks and manta rays |
+    | Rottnest Island | Western Australia | Quokkas and marine life |
+    | Kaikoura | New Zealand | Whale watching and seal colonies |
+
+    ### Cultural/Urban
+    | Destination | Location | Description |
+    |-------------|----------|-------------|
+    | Melbourne | Victoria | Arts, coffee culture, laneways |
+    | Sydney | NSW | Iconic harbor, beaches, diverse neighborhoods |
+    | Hobart | Tasmania | Heritage, MONA, food scene |
+    | Auckland | New Zealand | Polynesian culture meets modern city |
+    | Wellington | New Zealand | Creative capital with museums and cafes |
+
+    ### Family
+    | Destination | Location | Description |
+    |-------------|----------|-------------|
+    | Gold Coast | Queensland | Theme parks and beaches |
+    | Port Douglas | Queensland | Reef access with family-friendly resorts |
+    | Canberra | ACT | Educational attractions and outdoor spaces |
+    | Bay of Islands | New Zealand | Dolphins, beaches, island hopping |
     """;
 
-    public async Task<AIAgent> CreateAsync()
+    public Task<AIAgent> CreateAsync()
     {
         // Get userId from HttpContext (fallback to threadId or default-user)
         string userId = _httpContextAccessor.HttpContext?.Items["UserId"] as string
             ?? _httpContextAccessor.HttpContext?.Items["ThreadId"] as string
             ?? "default-user";
 
-        var tools = await GetTools();
-
         var logger = _loggerFactory.CreateLogger<ContosoTravelAgentBuilder>();
-
-        var skillPaths = new[]
-        {
-            Path.Combine(AppContext.BaseDirectory, "skills/flight-booking"),
-            Path.Combine(AppContext.BaseDirectory, "skills/trip-planner"),
-            Path.Combine(AppContext.BaseDirectory, "skills/visa-assistance")
-        };
-
-        var skillsProvider = new AgentSkillsProvider(skillPaths: skillPaths, loggerFactory: _loggerFactory);
-        var userProfileMemoryProvider = GetUserProfileMemoryProvider(userId);
-        var contextProviders = new List<AIContextProvider> { skillsProvider, userProfileMemoryProvider };
-
         AIAgent agent = _chatClient.AsAIAgent(new ChatClientAgentOptions
         {
             Name = Constants.AgentName,
@@ -107,15 +140,8 @@ public class ContosoTravelAgentBuilder
             {
                 ResponseFormat = ChatResponseFormat.Text,
                 Instructions = AgentInstructions,
-                Tools = [
-                        AIFunctionFactory.Create(UserContextTools.GetUserContext),
-                        AIFunctionFactory.Create(DateTimeTools.GetCurrentDate),
-                        AIFunctionFactory.Create(DateTimeTools.CalculateDateDifference),
-                        AIFunctionFactory.Create(DateTimeTools.ValidateTravelDates),
-                        AIFunctionFactory.Create(DateTimeTools.ValidateTravelDates),
-                        .. tools]
+                Tools = []
             },
-            AIContextProviders = contextProviders,
         });
 
         agent = agent.AsBuilder().UseOpenTelemetry(Constants.ApplicationId, options =>
@@ -123,49 +149,7 @@ public class ContosoTravelAgentBuilder
             options.EnableSensitiveData = true;
         }).UseLogging(_loggerFactory).Build();
 
-        return new ServerFunctionApprovalAgent(agent, _jsonSerializerOptions);
+        return Task.FromResult(agent);
     }
 
-    private async Task<List<AITool>> GetTools()
-    {
-        var mcpTools = await _mcpClient.ListToolsAsync();
-        var processedTools = new List<AITool>();
-        foreach (var tool in mcpTools)
-        {
-            var toolName = GetToolName(tool);
-            if (string.Equals(toolName, "book_flight", StringComparison.OrdinalIgnoreCase))
-            {
-                // Wrap BookFlight with ApprovalRequiredAIFunction
-                AIFunction bookFlightWithApproval = new ApprovalRequiredAIFunction(tool);
-                processedTools.Add(bookFlightWithApproval);
-            }
-            else
-            {
-                processedTools.Add(tool);
-            }
-        }
-
-        return processedTools;
-    }
-
-    private string GetToolName(AITool tool)
-    {
-        // Use ToString to get the tool name
-        var name = tool.ToString();
-        return name ?? "Unknown";
-    }
-
-    private UserProfileMemoryProvider GetUserProfileMemoryProvider(string userId)
-    {
-        return new UserProfileMemoryProvider(
-            _chatClient,
-            _cosmosDatabase!,
-            _config.CosmosDbUserProfileContainer ?? "UserProfiles",
-            new UserProfileMemoryProviderScope
-            {
-                UserId = userId,
-                ApplicationId = Constants.ApplicationId
-            },
-            loggerFactory: _loggerFactory);
-    }
 }

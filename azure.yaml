@@ -1,14 +1,6 @@
 name: agent-builder-workshop
 
 services:
-  mcp-server:
-    project: src/mcp
-    language: csharp
-    host: containerapp
-    docker:
-      path: ./Dockerfile
-      context: ../
-
   backend:
     project: src/backend
     language: csharp

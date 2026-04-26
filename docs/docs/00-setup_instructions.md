@@ -1,5 +1,7 @@
 # Setting Up Your Environment
 
+> **Duration**: ~15 minutes
+
 ## Prerequisites
 
 - **GitHub Account**: If you don't have one yet, sign up on [GitHub](https://github.com/join){:target="_blank"}.
@@ -9,11 +11,12 @@
 
 ## Setup Source Code Repository
 
-1. From your browser, navigate to the [agentcamp-workshop](https://github.com/binarytrails-ai/agentcamp-workshop) repository on GitHub. This repository has all the code and resources for the session.
-1. Fork this repository to your own GitHub account. </br>
-   [![Fork on GitHub](https://img.shields.io/badge/Fork%20Repo-blue?logo=github&style=for-the-badge)](https://github.com/binarytrails-ai/agentcamp-workshop/fork)
+1. The source code is in [agentcamp-workshop](https://github.com/binarytrails-ai/agentcamp-workshop) GitHub repository.
 
-1. The recommended way to work through this session is with **GitHub Codespaces**, which provides a ready-to-use environment with all required tools. </br>Alternatively, you can use a Visual Studio Code to run the application locally.</br></br>
+    Fork this repository to your own GitHub account. </br>
+    [![Fork on GitHub](https://img.shields.io/badge/Fork%20Repo-blue?logo=github&style=for-the-badge)](https://github.com/binarytrails-ai/agentcamp-workshop/fork)
+
+1. The recommended way to work through this session is with **GitHub Codespaces**, which provides a ready-to-use environment with all required tools. </br>Alternatively, you can use Visual Studio Code to run the application locally.</br></br>
 **Using GitHub Codespaces**: Once you've forked the repository, navigate to your forked repository on GitHub and click the green **Code** button, then select the **Codespaces** tab and click **Create codespace on main**.
 
     The Codespace will be pre-configured with all the necessary dependencies and tools to run the labs.
@@ -23,15 +26,13 @@
 
 ---
 
-## Set Up Azure Infrastructure
-
-Deploy the application to Azure. You will also connect to these resources when running the application from your local machine or Codespace.
+## Set Up Azure Environment
 
 ### 1. Authenticate with Azure
 
 First, authenticate with your Azure account using the Azure Developer CLI:
 
-```powershell
+```bash
 azd auth login --use-device-code
 ```
 
@@ -41,164 +42,113 @@ Follow the prompts to complete the authentication process in your browser.
 
 Create a new environment for your Azure resources:
 
-```powershell
+```bash
 azd env new dev
 azd env select dev
 azd env set AZURE_LOCATION australiaeast
 ```
 
-!!! Note "Azure Location"
-    You can change `australiaeast` to any Azure region that supports AI Foundry. Common options include: `eastus`, `westus2`, `westeurope`, `southeastasia`.
+### 3. Provision Azure Resources
 
-### 3. Provision and Deploy
-
-Deploy all required Azure resources using a single command:
-
-```powershell
-azd up
-```
-
-This command will:
-
-- Provision all the necessary resources in Azure.
-- Deploy AI models.
-- Configure authentication and permissions
-
-!!! Warning "Deployment Time"
-    The deployment process may take 5-10 minutes to complete. Please be patient while Azure provisions all resources.
-
-### Verify Deployment ✅
-
-1. Navigate to the [Azure Portal](https://portal.azure.com) and verify the resources under the resource group `rg-aiagent-ws-dev`.
-
----
-
-## Load Sample Data
-
-Before running the application, you should load your database with sample data required by the application.
-
-1. Run the following command in your terminal to execute the seeding script. You can also use the Play button in Visual Studio Code to run the script directly from the editor.
+1. Create all required Azure infrastructure using the following command. This command will deploy resources defined in the `infra` folder.
 
     ```bash
-    dotnet run --project scripts/seed-cosmosdb/Program.cs
+    azd provision
     ```
 
-2. Verify that the data has been inserted successfully by checking the output messages in the terminal. You should see confirmation messages for each record inserted.
+1. Navigate to the [Azure Portal](https://portal.azure.com) and verify the resources under the resource group `rg-aiagent-wks-dev`.
+
+### 4. Load Sample Data
+
+The application uses sample data which needs to be loaded into the Cosmos DB instance that was provisioned in the previous step.
+
+1. Run the following command from a new terminal window to execute the script. You can also use the Play button in Visual Studio Code to run the script directly from the editor.
+
+    ```bash
+    dotnet run scripts/seed-cosmosdb/Program.cs
+    ```
+
+### 5. Deploy Application to Azure
+
+1. The application uses containerized services for the frontend and backend, which are deployed to Azure Container Apps. Run the following command to build and deploy these services to Azure:
+
+    ```bash
+    azd deploy
+    ```
+
+2. Once deployment completes, retrieve the frontend URL from your environment variables using the following command:
+
+    ```bash
+    # Linux/macOS
+    azd env get-values | grep FRONTEND_URI
+    ```
+
+    ```powershell
+    # Windows PowerShell
+    azd env get-values | Select-String "FRONTEND_URI"
+    ```
+
+    Copy the value and open it in your browser to access the application.
+
+    ![Frontend Application](media/frontend-app.png)
 
 ---
 
 ## Running the Application Locally
 
-You have two options to run the application: using .NET Aspire (recommended) or starting each service manually.
+For local development and testing, you can run the application on your machine or Codespace. 
 
-### Option A: Using .NET Aspire (Recommended)
+This uses the same Azure resources (AI Foundry, Cosmos DB) that were provisioned during deployment, allowing you to develop and test changes before deploying them. The environment variables for connecting to Azure resources are setup in the .env file when you provision the infrastructure.
 
-.NET Aspire orchestrates all services (MCP server, backend, and frontend) with a single command and provides a dashboard for monitoring.
+### 1. Build the Frontend Application
 
-1. **Build the frontend application:**
+Open a new terminal in Visual Studio Code and navigate to `src/frontend` folder and build the application:
 
-    Navigate to the frontend folder and build the application:
+```bash
+cd src/frontend
+npm install
+npm run build
+```
 
-    ```bash
-    cd src/frontend
-    npm install
-    npm run build
-    ```
+### 2. Start the Application
 
-2. **Start the Aspire AppHost:**
+The application uses .NET Aspire to orchestrate all services (backend and frontend) with a single command and provides a dashboard for monitoring.
 
-    Navigate to the AppHost folder and run the application:
+Open a new terminal in Visual Studio Code and navigate to `src/ContosoTravel.AppHost` folder and run the application:
 
-    ```bash
-    cd src/ContosoTravel.AppHost
-    dotnet run
-    ```
+```bash
+cd src/ContosoTravel.AppHost
+dotnet run
+```
 
-    This will start all services and open the .NET Aspire dashboard in your browser, where you can:
+### 3. Access the Application
 
-    - View logs from all services
-    - Monitor resource usage
-    - Access endpoints for each service
-
-### Option B: Manual Startup (Individual Services)
-
-If you prefer to start each service individually, follow these steps:
-
-#### 1. Start the MCP Server
-
-- Navigate to the MCP server folder:
-
-    ```bash
-    cd src/mcp
-    ```
-
-- Start the MCP server by running the following command:
-
-    ```bash
-    dotnet run
-    ```
-
-#### 2. Start the Backend Server
-
-- In a separate terminal, navigate to the backend folder:
-
-    ```bash
-    cd src/backend
-    ```
-
-- Start the backend server by running the following command. This will start the backend API server on **`http://localhost:5001`**
-
-    ```bash
-    dotnet run
-    ```
-
-#### 3. Start the Frontend Server
-
-- In a separate terminal, navigate to the frontend folder by running the following command:
-
-    ```bash
-    cd src/frontend
-    ```
-
-- Install the required npm packages (if you haven't already):
-
-    ```bash
-    npm install
-    ```
-
-- Build the frontend application:
-
-    ```bash
-    npm run build
-    ```
-
-- Start the frontend server. The frontend is configured to communicate with the backend API on port **5001**:
-
-    ```bash
-    npm start
-    ```
-
-   To access the frontend application:
+1. To access the .NET Aspire dashboard:
     
-   - **Local Development**: Open your browser to `http://localhost:3000`
-   - **GitHub Codespaces**: When the frontend starts, Codespaces will automatically forward port 3000. 
-        Go to the **Ports** panel in VS Code, find port **3000**, and click the **globe icon** (🌐) to open the frontend in your browser.
+    - **Local Development**: Open your browser to `http://localhost:15160`
+    - **GitHub Codespaces**: When the application starts, Codespaces will automatically forward port **15160**.
+        
+        Go to the **Ports** panel in VS Code, find port **15160**, and click the **globe icon** (🌐) to open the dashboard in your browser.
+
+        ![Dashboard](media/dashboard-access.png)
+        
+
+2. You can see the links to access the frontend and backend services under the `Resources` section in the dashboard.  Click on the frontend link to open the Contoso Travel Agent application in your browser.
+
+    ![Dashboard](media/dashboard.png)
+
+3. When you interact with the agent, you can see the full trace of the agent execution in the Aspire dashboard, including all messages, tool calls, and memory interactions. Click in on the Trace option to open the trace view.
+
+    ![Trace View](media/dashboard-2.png)
+
+    Click on the `GenAI details` option to see the steps in the agent's reasoning process, including any calls to the LLM and the tool inputs/outputs.
+
+    ![Trace View](media/dashboard-3.png)
 
 ---
 
-### Test Your Setup
+## Next Steps
 
-Regardless of which option you chose, verify that everything is working correctly:
-
-- **API Testing**: Navigate to the file `src/backend/ContosoTravelAgent.http` in the code repository.
-  
-    This file contains HTTP requests that you can use to interact with the backend API. To send a request, click on the `Send Request` link above each request in the file.
-
-- **Web Application Testing**: Open your web browser and navigate to `http://localhost:3000`.
-
-  
-    Click on the `New Chat` button to start a new conversation with the travel assistant. 
-    
-    Send a few messages to verify that the frontend and backend are communicating correctly.
+👉 **[Lab 1: Personalization using Long-Term Memory](01-lab-long-term-memory.md)**
 
 ---

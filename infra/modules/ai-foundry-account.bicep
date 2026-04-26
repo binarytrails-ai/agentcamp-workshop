@@ -1,4 +1,4 @@
-@description('Name of the Azure AI Foundry resource (account)')
+@description('Name of the Azure AI Foundry resource (account)')  
 param name string
 
 @description('Azure region of the deployment')
@@ -12,7 +12,7 @@ resource aiFoundry 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
   location: location
   tags: tags
   sku: {
-    name: 'S0'
+    name: 'S0' // Standard tier
   }
   kind: 'AIServices'
   identity: {
@@ -29,4 +29,5 @@ resource aiFoundry 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
 output resourceId string = aiFoundry.id
 output name string = aiFoundry.name
 output endpoint string = aiFoundry.properties.endpoint
+// NOTE: apiKey output is for workshop purposes only. Use managed identities in production.
 output apiKey string = aiFoundry.listKeys().key1

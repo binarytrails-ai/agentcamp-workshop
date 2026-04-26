@@ -6,7 +6,9 @@ site_url: https://binarytrails-ai.github.io/agentcamp-workshop
 nav:
   - Welcome: index.md
   - Environment Setup: 00-setup_instructions.md
-  - Aspire Dashboard Setup: Resources/aspire-dashboard-setup.md
+  - Lab 1 - Long-Term Memory: 01-lab-long-term-memory.md
+  - Lab 2 - Episodic Memory: 02-lab-episodic-memory.md
+  - Lab 3 - Semantic Memory: 03-lab-semantic-memory.md
   - Finishing Up: finishing-up.md
   - Learning Resources: resources.md
   # - Feedback: feedback.md
@@ -72,9 +74,3 @@ extra_css:
 # mkdocs.yml
 extra_javascript:
   - js/custom-nav.js
-
-# Version selector for mike
-extra:
-  version:
-    provider: mike
-    default: latest

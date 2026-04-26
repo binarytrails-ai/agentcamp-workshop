@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\backend\ContosoTravelAgent.Host.csproj" />
-    <ProjectReference Include="..\mcp\ContosoTravel.McpServer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,7 +11,7 @@ public record ContosoTravelAppConfig
     public string? AzureLocation { get; init; }
     public string? AzureSubscriptionId { get; init; }
     public string? AzureTenantId { get; init; }
-    public string AzureEmbeddingModelName { get; init; } = "text-embedding-ada-002";
+    public string AzureEmbeddingModelName { get; init; } = "text-embedding-3-small";
     public string AzureTextModelName { get; init; } = "gpt-4o";
     public string? AzureAISearchEndpoint { get; init; }
     public string? AzureAISearchAdminKey { get; init; }
@@ -25,8 +25,5 @@ public record ContosoTravelAppConfig
     public string? CosmosDbChatHistoryContainer { get; init; }
     public string? CosmosDbUserProfileContainer { get; init; }
     public string? CosmosDbFlightsContainer { get; init; }
-
-    // MCP tool configuration for flight search
-    public string McpFlightSearchToolBaseUrl { get; init; } = "http://localhost:5002";
-    public string McpFlightSearchApiKey { get; init; }
+    public string? CosmosDbDestinationsContainer { get; init; }
 }
