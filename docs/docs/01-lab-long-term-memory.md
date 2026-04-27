@@ -32,6 +32,27 @@ Session 2: Agent: "Based on your hiking interests and $2000 budget..." ✅
 
 ---
 
+## How it works
+
+![User Preferences](media/sd-user-preference.png)
+
+**Profile Injection (Reading Memory):**
+
+1. User sends a prompt requesting travel recommendations
+2. Before the LLM processes the request, AI Context Provider loads the user profile from Cosmos DB
+3. Profile data (preferences, budget, interests, past trips) is injected into the conversation context
+4. LLM generates personalized responses based on stored preferences
+
+**Dynamic Learning (Writing Memory):**
+
+1. User shares new preferences during conversation (e.g., "I love hiking")
+2. After the LLM responds, AI Context Provider analyzes the conversation
+3. LLM extracts new preferences and updates from the conversation
+4. Updated profile is merged with existing data and saved to Cosmos DB
+5. Future conversations automatically use the enriched profile
+
+---
+
 ## Instructions
 
 ### Part A:  Profile Injection

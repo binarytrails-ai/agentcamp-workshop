@@ -15,7 +15,18 @@ You will enable your agent to remember previous interactions, bookings, and pref
 
 **Episodic memory** in AI agents refers to the system's ability to recall specific past interactions and events. This allows the agents to answer questions like: "What bookings did I make?" or "What recommendations did you give me last time?"
 
+---
 
+## How it works
+
+![RAG](media/sd-rag.png)
+
+1. User sends a prompt referencing past conversations. For example: "Where did I travel last year?"
+2. LLM decides to invoke the SearchChatHistory tool
+3. The tool uses an embedding model to generate a vector representation of the query
+4. Vector search is performed against stored chat history in Cosmos DB
+5. The most relevant past messages are retrieved and returned to the LLM
+6. LLM uses this context to generate a personalized response based on conversation history
 
 ---
 
