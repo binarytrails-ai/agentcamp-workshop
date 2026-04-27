@@ -357,6 +357,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#instructions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -516,6 +527,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#instructions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -578,6 +600,17 @@
 <hr>
 <h2 id="understanding-episodic-memory">Understanding Episodic Memory<a class="headerlink" href="#understanding-episodic-memory" title="Permanent link">¶</a></h2>
 <p><strong>Episodic memory</strong> in AI agents refers to the system's ability to recall specific past interactions and events. This allows the agents to answer questions like: "What bookings did I make?" or "What recommendations did you give me last time?"</p>
+<hr>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">¶</a></h2>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../media/sd-rag.png" data-desc-position="bottom"><img alt="RAG" src="../media/sd-rag.png"></a></p>
+<ol>
+<li>User sends a prompt referencing past conversations. For example: "Where did I travel last year?"</li>
+<li>LLM decides to invoke the SearchChatHistory tool</li>
+<li>The tool uses an embedding model to generate a vector representation of the query</li>
+<li>Vector search is performed against stored chat history in Cosmos DB</li>
+<li>The most relevant past messages are retrieved and returned to the LLM</li>
+<li>LLM uses this context to generate a personalized response based on conversation history</li>
+</ol>
 <hr>
 <h2 id="instructions">Instructions<a class="headerlink" href="#instructions" title="Permanent link">¶</a></h2>
 <h3 id="step-1-understand-chat-history-storage">Step 1: Understand Chat History Storage<a class="headerlink" href="#step-1-understand-chat-history-storage" title="Permanent link">¶</a></h3>

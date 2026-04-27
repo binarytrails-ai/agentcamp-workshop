@@ -330,6 +330,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#instructions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -516,6 +527,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#instructions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -588,6 +610,24 @@ Session 2: Agent asks the same questions again ❌
 </p><div class="highlight"><pre><span></span><code>Session 1: User shares preferences → Stored
 Session 2: Agent: "Based on your hiking interests and $2000 budget..." ✅
 </code></pre></div><p></p>
+<hr>
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">¶</a></h2>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../media/sd-user-preference.png" data-desc-position="bottom"><img alt="User Preferences" src="../media/sd-user-preference.png"></a></p>
+<p><strong>Profile Injection (Reading Memory):</strong></p>
+<ol>
+<li>User sends a prompt requesting travel recommendations</li>
+<li>Before the LLM processes the request, AI Context Provider loads the user profile from Cosmos DB</li>
+<li>Profile data (preferences, budget, interests, past trips) is injected into the conversation context</li>
+<li>LLM generates personalized responses based on stored preferences</li>
+</ol>
+<p><strong>Dynamic Learning (Writing Memory):</strong></p>
+<ol>
+<li>User shares new preferences during conversation (e.g., "I love hiking")</li>
+<li>After the LLM responds, AI Context Provider analyzes the conversation</li>
+<li>LLM extracts new preferences and updates from the conversation</li>
+<li>Updated profile is merged with existing data and saved to Cosmos DB</li>
+<li>Future conversations automatically use the enriched profile</li>
+</ol>
 <hr>
 <h2 id="instructions">Instructions<a class="headerlink" href="#instructions" title="Permanent link">¶</a></h2>
 <h3 id="part-a-profile-injection">Part A:  Profile Injection<a class="headerlink" href="#part-a-profile-injection" title="Permanent link">¶</a></h3>
