@@ -646,6 +646,7 @@
 </code></pre></div>
 <p>With:</p>
 <div class="highlight"><pre><span></span><code><span class="w">  </span><span class="kt">var</span><span class="w"> </span><span class="n">enrichedQuery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">EnrichQueryAsync</span><span class="p">(</span><span class="n">query</span><span class="p">);</span>
+<span class="w">  </span><span class="n">_logger</span><span class="p">.</span><span class="n">LogInformation</span><span class="p">(</span><span class="s">"[ChatHistorySearch] Enriched query: {EnrichedQuery}"</span><span class="p">,</span><span class="w"> </span><span class="n">enrichedQuery</span><span class="p">);</span>
 <span class="w">  </span><span class="c1">// Generate embedding for the enriched search query</span>
 <span class="w">  </span><span class="kt">var</span><span class="w"> </span><span class="n">embeddingResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_embeddingClient</span><span class="p">.</span><span class="n">GenerateEmbeddingAsync</span><span class="p">(</span><span class="n">enrichedQuery</span><span class="p">);</span>
 </code></pre></div>
