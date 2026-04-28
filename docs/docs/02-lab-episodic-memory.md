@@ -21,12 +21,12 @@ You will enable your agent to remember previous interactions, bookings, and pref
 
 ![RAG](media/sd-rag.png)
 
-1. User sends a prompt referencing past conversations. For example: "Where did I travel last year?"
-2. LLM decides to invoke the SearchChatHistory tool
-3. The tool uses an embedding model to generate a vector representation of the query
-4. Vector search is performed against stored chat history in Cosmos DB
-5. The most relevant past messages are retrieved and returned to the LLM
-6. LLM uses this context to generate a personalized response based on conversation history
+  1. User sends a prompt referencing past conversations. For example: "Where did I travel last year?"
+  2. LLM decides to invoke the SearchChatHistory tool
+  3. The tool uses an embedding model to generate a vector representation of the query
+  4. Vector search is performed against stored chat history in Cosmos DB
+  5. The most relevant past messages are retrieved and returned to the LLM
+  6. LLM uses this context to generate a personalized response based on conversation history
 
 ---
 
@@ -81,6 +81,7 @@ With:
 
 ```csharp
   var enrichedQuery = await EnrichQueryAsync(query);
+  _logger.LogInformation("[ChatHistorySearch] Enriched query: {EnrichedQuery}", enrichedQuery);
   // Generate embedding for the enriched search query
   var embeddingResponse = await _embeddingClient.GenerateEmbeddingAsync(enrichedQuery);
 ```
