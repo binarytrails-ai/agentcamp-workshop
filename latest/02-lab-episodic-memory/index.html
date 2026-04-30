@@ -632,7 +632,23 @@
 <p>Notice how the tool description guides the LLM on when to use it:
 </p><div class="highlight"><pre><span></span><code><span class="na">[Description("Search past conversations to recall previous discussions, bookings, preferences, and interactions...")]</span>
 </code></pre></div><p></p>
-<h3 id="step-3-add-query-enrichment">Step 3: Add Query Enrichment<a class="headerlink" href="#step-3-add-query-enrichment" title="Permanent link">¶</a></h3>
+<h3 id="step-3-update-agent-configuration">Step 3: Update Agent Configuration<a class="headerlink" href="#step-3-update-agent-configuration" title="Permanent link">¶</a></h3>
+<p>Open src/backend/Agents/ContosoTravelAgentBuilder.cs and update the tools list to include the search tool in the agent configuration.</p>
+<div class="highlight"><pre><span></span><code><span class="n">Tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="n">AIFunctionFactory</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span>
+<span class="w">        </span><span class="n">_chatHistorySearchTool</span><span class="p">.</span><span class="n">SearchChatHistory</span><span class="p">,</span>
+<span class="w">        </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">"SearchChatHistory"</span><span class="p">,</span>
+<span class="w">        </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Search past conversations to recall previous discussions and bookings"</span><span class="p">)</span>
+<span class="p">]</span>
+</code></pre></div>
+<h3 id="step-4-update-the-prompt-instructions">Step 4: Update the Prompt Instructions<a class="headerlink" href="#step-4-update-the-prompt-instructions" title="Permanent link">¶</a></h3>
+<p>Help the agent understand when to use the search tool by adding a ## TOOL USAGE section to the AgentInstructions constant.</p>
+<div class="highlight"><pre><span></span><code>## TOOL USAGE
+- **SearchChatHistory**: Use when user references past conversations ("last time", "remember when", 
+  "previously"), asks about previous bookings or recommendations, or when context from conversation 
+  history would help personalize responses.
+</code></pre></div>
+<h3 id="step-5-add-query-enrichment">Step 5: Add Query Enrichment<a class="headerlink" href="#step-5-add-query-enrichment" title="Permanent link">¶</a></h3>
 <p>Query enrichment improves search recall by extracting entities and adding related terms before vector search.</p>
 <p><strong>Example transformation:</strong>
 </p><div class="highlight"><pre><span></span><code>User: "Tell me about my Sydney trip"
@@ -651,22 +667,6 @@
 <span class="w">  </span><span class="kt">var</span><span class="w"> </span><span class="n">embeddingResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="n">_embeddingClient</span><span class="p">.</span><span class="n">GenerateEmbeddingAsync</span><span class="p">(</span><span class="n">enrichedQuery</span><span class="p">);</span>
 </code></pre></div>
 <p>The <code>EnrichQueryAsync</code> method uses the LLM to extract entities and add semantically related travel terms, improving vector search recall.</p>
-<h3 id="step-4-update-agent-configuration">Step 4: Update Agent Configuration<a class="headerlink" href="#step-4-update-agent-configuration" title="Permanent link">¶</a></h3>
-<p>Open src/backend/Agents/ContosoTravelAgentBuilder.cs and update the tools list to include the search tool in the agent configuration.</p>
-<div class="highlight"><pre><span></span><code><span class="n">Tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="n">AIFunctionFactory</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span>
-<span class="w">        </span><span class="n">_chatHistorySearchTool</span><span class="p">.</span><span class="n">SearchChatHistory</span><span class="p">,</span>
-<span class="w">        </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">"SearchChatHistory"</span><span class="p">,</span>
-<span class="w">        </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s">"Search past conversations to recall previous discussions and bookings"</span><span class="p">)</span>
-<span class="p">]</span>
-</code></pre></div>
-<h3 id="step-5-update-the-prompt-instructions">Step 5: Update the Prompt Instructions<a class="headerlink" href="#step-5-update-the-prompt-instructions" title="Permanent link">¶</a></h3>
-<p>Help the agent understand when to use the search tool by adding a ## TOOL USAGE section to the AgentInstructions constant.</p>
-<div class="highlight"><pre><span></span><code>## TOOL USAGE
-- **SearchChatHistory**: Use when user references past conversations ("last time", "remember when", 
-  "previously"), asks about previous bookings or recommendations, or when context from conversation 
-  history would help personalize responses.
-</code></pre></div>
 <hr>
 <h2 id="test-your-implementation">Test Your Implementation<a class="headerlink" href="#test-your-implementation" title="Permanent link">¶</a></h2>
 <p>Refer to the <strong><a href="../00-setup_instructions/#running-the-application-locally">Running the Application Locally</a></strong> section in the Environment Setup guide to start the application.</p>
