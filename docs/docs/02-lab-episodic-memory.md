@@ -57,7 +57,31 @@ Notice how the tool description guides the LLM on when to use it:
 [Description("Search past conversations to recall previous discussions, bookings, preferences, and interactions...")]
 ```
 
-### Step 3: Add Query Enrichment
+### Step 3: Update Agent Configuration
+
+Open src/backend/Agents/ContosoTravelAgentBuilder.cs and update the tools list to include the search tool in the agent configuration.
+
+```csharp
+Tools = [
+    AIFunctionFactory.Create(
+        _chatHistorySearchTool.SearchChatHistory,
+        name: "SearchChatHistory",
+        description: "Search past conversations to recall previous discussions and bookings")
+]
+```
+
+### Step 4: Update the Prompt Instructions
+
+Help the agent understand when to use the search tool by adding a ## TOOL USAGE section to the AgentInstructions constant.
+
+```text
+## TOOL USAGE
+- **SearchChatHistory**: Use when user references past conversations ("last time", "remember when", 
+  "previously"), asks about previous bookings or recommendations, or when context from conversation 
+  history would help personalize responses.
+```
+
+### Step 5: Add Query Enrichment
 
 Query enrichment improves search recall by extracting entities and adding related terms before vector search.
 
@@ -87,30 +111,6 @@ With:
 ```
 
 The `EnrichQueryAsync` method uses the LLM to extract entities and add semantically related travel terms, improving vector search recall.
-
-### Step 4: Update Agent Configuration
-
-Open src/backend/Agents/ContosoTravelAgentBuilder.cs and update the tools list to include the search tool in the agent configuration.
-
-```csharp
-Tools = [
-    AIFunctionFactory.Create(
-        _chatHistorySearchTool.SearchChatHistory,
-        name: "SearchChatHistory",
-        description: "Search past conversations to recall previous discussions and bookings")
-]
-```
-
-### Step 5: Update the Prompt Instructions
-
-Help the agent understand when to use the search tool by adding a ## TOOL USAGE section to the AgentInstructions constant.
-
-```text
-## TOOL USAGE
-- **SearchChatHistory**: Use when user references past conversations ("last time", "remember when", 
-  "previously"), asks about previous bookings or recommendations, or when context from conversation 
-  history would help personalize responses.
-```
 
 ---
 
